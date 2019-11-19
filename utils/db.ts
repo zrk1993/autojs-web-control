@@ -13,7 +13,7 @@ const orm = new DBM({
   port: 3306,
   user: 'root',
   password: 'Mysql@123456',
-  database: 'pay',
+  database: 'cloud_auto',
   isDebug: false,
 });
 
