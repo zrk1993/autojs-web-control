@@ -1,7 +1,7 @@
 import db from '@/utils/db';
 
 /**
- * 数据模型
+ * 数据库表模型
  */
 export interface IDeviceModel {
   device_id?: number,
