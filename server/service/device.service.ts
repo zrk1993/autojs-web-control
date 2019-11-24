@@ -1,4 +1,3 @@
-import db from '@/utils/db';
 import BaseModel from './base.model';
 
 export const tableName = 't_dsada';
@@ -14,7 +13,7 @@ export class DeviceService extends BaseModel<ITableStructure> {
   constructor() {
     super({ tableName });
   }
-  
+
 }
 
 export default new DeviceService();

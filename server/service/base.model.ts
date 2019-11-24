@@ -2,14 +2,16 @@ import db from '@/utils/db';
 
 export default class BaseService<T> {
   $tableName: string;
+  $primaryKey: string;
   $tableStructure: T;
 
-  constructor({ tableName }) {
-    this.$tableName = tableName;
+  constructor(args: { tableName: string, primaryKey?: string }) {
+    this.$tableName = args.tableName;
+    this.$primaryKey = args.primaryKey || `${args.tableName}_id`;
   }
 
   async getById(id: string | number): Promise<T> {
-    return await db.table(this.$tableName).where({ id }).findOrEmpty();
+    return await db.table(this.$tableName).where({ [this.$primaryKey]: id }).findOrEmpty();
   }
 
   async getAll(): Promise<T[]> {
@@ -21,7 +23,7 @@ export default class BaseService<T> {
   }
 
   async deleteById(id: string | number) {
-    return await db.table(this.$tableName).where({ id }).delete();
+    return await db.table(this.$tableName).where({ [this.$primaryKey]: id }).delete();
   }
 
   async insert(data: T): Promise<any>;
@@ -31,7 +33,7 @@ export default class BaseService<T> {
   }
 
   async updateById(id: string|number, data: T) {
-    return await db.table(this.$tableName).where({ id }).update(data);
+    return await db.table(this.$tableName).where({ [this.$primaryKey]: id }).update(data);
   }  
 
 }
