@@ -11,6 +11,8 @@ import * as koaLogger from 'koa-logger';
 import config from './config';
 import * as router from './router';
 
+import { WebSocketManager } from '@/service/WebSocketManager';
+
 async function main() {
   const app = await createApplication(__dirname, Object.keys(router).map(k => router[k]), {
     logger: getLogger('app'),
@@ -23,6 +25,8 @@ async function main() {
   app.use(errorHandle());
 
   app.listen(config.port);
+
+  WebSocketManager.init(app.getHttpServer());
 }
 
 main();
