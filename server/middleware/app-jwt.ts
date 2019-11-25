@@ -20,7 +20,7 @@ const JWTTokenError = {
 
 export const verify = (ctx: Koa.Context): Promise<string | any> => {
   return new Promise((resolve, reject) => {
-    const token = ctx.header.authorization || ctx.cookies.get('authorization');
+    const token = ctx.query.token || ctx.header.authorization || ctx.cookies.get('authorization');
     jwt.verify(token, secret, (error: Error, decoded: any) => {
       if (error) {
         error.message = JWTTokenError[error.name];

@@ -9,20 +9,22 @@ import { verify } from '../middleware/app-jwt';
 import db from '../utils/db';
 
 export default function Role(...roles: string[]) {
-  const role = Use(async (ctx: Koa.Context, next: () => void) => {
+  const role = Use(async (ctx: Koa.Context, next: () => Promise<void>) => {
     const signData = await verify(ctx);
     ctx.state.curUser = signData;
-    const sql = `
-      SELECT R.code FROM role R
-      LEFT JOIN user_roles UR ON UR.role_id = R.id
-      WHERE UR.user_id = ?
-    `;
-    const userRoles = await db.query(sql, [signData.id]);
-    if (roles.some(r => userRoles.find(ur => ur.code === r))) {
-      next();
-    } else {
-      throw new Error('no authorization!');
-    }
+    // const sql = `
+    //   SELECT R.code FROM role R
+    //   LEFT JOIN user_roles UR ON UR.role_id = R.id
+    //   WHERE UR.user_id = ?
+    // `;
+    // const userRoles = await db.query(sql, [signData.id]);
+    // if (roles.some(r => userRoles.find(ur => ur.code === r))) {
+    //   next();
+    // } else {
+    //   throw new Error('no authorization!');
+    // }
+
+    await next();
   });
 
   const description = Description(`【${roles.join()}】`);

@@ -20,15 +20,9 @@ export class Auth {
     password: joi.string().required(),
   })
   async login(@Body() body: any, @Ctx() ctx: Koa.Context) {
-    const where = {
-      username: body.username,
-      password: md5(body.password),
-      enable: 1,
-    };
-    const user = await db.table('user').where(where).find();
     const token = appJwt.sign({
-      id: user.id,
-      username: user.username,
+      id: 'user.id',
+      username: 'user.username',
     });
     ctx.cookies.set('authorization', token);
     return ResultUtils.success({ token });
@@ -41,34 +35,15 @@ export class Auth {
     return ResultUtils.success();
   }
 
-  @Get('/lock')
-  @Description('lock')
-  async lock(@Ctx() ctx: Koa.Context) {
-    const lock = await Lock.getLock('a');
-    const a = await db.table('wallet').find();
-    console.log(a.frozen);
-    await new Promise((resolve, reject) => {
-      setTimeout(resolve, 3000* Math.random());
-    });
-    await db.table('wallet').where({ id: a.id }).update({ frozen: a.frozen + 1 });
-    lock.release();
-    return ResultUtils.success('1');
-  }
-
   @Get('/info')
   @Description('用户信息')
   @Role(SYS_ROLE.admin, SYS_ROLE.agent, SYS_ROLE.merchant)
-  async info(@CurUser() curUser: any) {
-    const user = await db.table('user').where({ id: curUser.id, enable: 1 }).find();
-    const sql = `
-      SELECT R.* FROM role R
-      LEFT JOIN user_roles UR ON UR.role_id = R.id
-      WHERE UR.user_id = ?
-    `;
-    const roles = await db.query(sql, [user.id]);
+  async info() {
     return ResultUtils.success({
-      name: user.username,
-      roles: roles.map(r => r.code),
+      roles: ['admin'],
+      introduction: 'I am a super administrator',
+      avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+      name: 'Super Admin'
     });
   }
 }

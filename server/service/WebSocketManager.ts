@@ -11,6 +11,7 @@ type IClientStatusChangeListener = (client: WebSocket, status: 'connection' | 'c
 const ipToClient = new Map<string, WebSocket>();
 const clientMessageListeners: IClientMessageListener[] = [];
 const clientStatusChangeListeners: IClientStatusChangeListener[] = [];
+const messageAnswer = new WeakMap<object, any>();
 
 export class WebSocketManager extends EventEmitter {
 
@@ -76,9 +77,15 @@ export class WebSocketManager extends EventEmitter {
     client.addListener('pong', (data: Buffer) => {});
 
     client.addListener('message', (data: WebSocket.Data) => {
-      clientMessageListeners.forEach((listener) => {
-        listener(client, data);
-      });
+      const message = JSON.parse(data as string);
+      if (message.type === 'respond') {
+        const answer = messageAnswer.get(message.message_id);
+        answer && answer(null, message);
+      } else {
+        clientMessageListeners.forEach((listener) => {
+          listener(client, data);
+        });
+      }
     });
   }
 
@@ -90,21 +97,25 @@ export class WebSocketManager extends EventEmitter {
     clientStatusChangeListeners.push(listener);
   }
 
-  public sendMessage(client: WebSocket, message: string) {
+  public sendMessage(client: WebSocket, message: any, cb?: (err: Error, data?: any) => {}) {
+    message.message_id = Date.now();
     client.send(message, (err: Error) => {
       if (err) {
         logger.error(`send message appear error, message -> ${err.message}`);
+        cb(err);
+      } else {
+        messageAnswer.set(message.message_id, cb);
       }
     });
   }
 
-  public broadcastToAll(message: string) {
+  public broadcastToAll(message: object) {
     for(const ws of ipToClient.values()) {
       this.sendMessage(ws, message);
     }
   }
 
-  public sendMessageToClients(clients: WebSocket[], message: string) {
+  public sendMessageToClients(clients: WebSocket[], message: object) {
     clients.forEach((client) => {
       this.sendMessage(client, message);
     });
