@@ -91,6 +91,19 @@ export const constantRoutes = [
   },
 
   {
+    path: '/script',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Script',
+        component: () => import('@/views/script/index'),
+        meta: { title: 'Script', icon: 'form' }
+      }
+    ]
+  },
+
+  {
     path: '/nested',
     component: Layout,
     redirect: '/nested/menu1',
