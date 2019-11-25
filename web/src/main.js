@@ -3,6 +3,7 @@ import Vue from 'vue'
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
 import ElementUI from 'element-ui'
+import { MessageBox, Message } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import locale from 'element-ui/lib/locale/lang/en' // lang i18n
 
@@ -11,6 +12,7 @@ import '@/styles/index.scss' // global css
 import App from './App'
 import store from './store'
 import router from './router'
+import WebSocketClientManager from './WebSocketClientManager'
 
 import '@/icons' // icon
 import '@/permission' // permission control
@@ -34,6 +36,14 @@ Vue.use(ElementUI, { locale })
 // Vue.use(ElementUI)
 
 Vue.config.productionTip = false
+
+WebSocketClientManager.getInstance().addConnectStatusListener((status) => {
+  Message({
+    message: 'websocket connect status : ' + status,
+    type: 'info',
+    duration: 5 * 1000
+  })
+});
 
 new Vue({
   el: '#app',
