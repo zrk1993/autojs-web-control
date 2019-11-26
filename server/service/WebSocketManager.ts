@@ -7,13 +7,15 @@ const logger = getLogger('WebSocketManager');
 
 type IClientMessageListener = (client: WebSocket, data: WebSocket.Data) => void;
 type IClientStatusChangeListener = (client: WebSocket, status: 'connection' | 'close' | 'error') => void;
+type IDeviceLogListener = (client: WebSocket, log: any) => void;
 
 const ipToClient = new Map<string, WebSocket>();
 const clientMessageListeners: IClientMessageListener[] = [];
 const clientStatusChangeListeners: IClientStatusChangeListener[] = [];
-const messageAnswer = new WeakMap<object, any>();
+const deviceLogListeners: IClientStatusChangeListener[] = [];
+const messageAnswer = new Map<object, any>();
 
-export class WebSocketManager extends EventEmitter {
+export default class WebSocketManager extends EventEmitter {
 
   static instance: WebSocketManager;
 
@@ -26,7 +28,7 @@ export class WebSocketManager extends EventEmitter {
     return WebSocketManager.instance;
   }
 
-  public getInstance() {
+  public static getInstance() {
     if (!WebSocketManager.instance) {
       logger.info('WebSocketManager Not initialized!');
     }
@@ -81,12 +83,20 @@ export class WebSocketManager extends EventEmitter {
       if (message.type === 'respond') {
         const answer = messageAnswer.get(message.message_id);
         answer && answer(null, message);
+      } else if (message.type === 'log') {
+        deviceLogListeners.forEach((listener) => {
+          listener(client, message);
+        });
       } else {
         clientMessageListeners.forEach((listener) => {
           listener(client, data);
         });
       }
     });
+  }
+
+  public addDeviceLogListener(listener: IDeviceLogListener) {
+    deviceLogListeners.push(listener);
   }
 
   public addClientMessageListener(listener: IClientMessageListener) {
@@ -98,8 +108,8 @@ export class WebSocketManager extends EventEmitter {
   }
 
   public sendMessage(client: WebSocket, message: any, cb?: (err: Error, data?: any) => {}) {
-    message.message_id = Date.now();
-    client.send(message, (err: Error) => {
+    message.message_id = `${Date.now()}_${Math.random()}`;
+    client.send(JSON.stringify(message), (err: Error) => {
       if (err) {
         logger.error(`send message appear error, message -> ${err.message}`);
         cb(err);
@@ -109,7 +119,7 @@ export class WebSocketManager extends EventEmitter {
     });
   }
 
-  public broadcastToAll(message: object) {
+  public broadcast(message: object) {
     for(const ws of ipToClient.values()) {
       this.sendMessage(ws, message);
     }

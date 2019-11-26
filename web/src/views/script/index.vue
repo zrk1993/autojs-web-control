@@ -1,7 +1,7 @@
 <template>
   <div class="script-container">
     <el-button @click="runScript">运行</el-button>
-    <article id="code"></article>
+    <article id="code" />
   </div>
 </template>
 
@@ -23,7 +23,7 @@ export default {
   },
   mounted() {
     this.codeMirror = window.CodeMirror(document.getElementById('code'), {
-      value: 'console.log("Hello world")',
+      value: 'toastLog("Hello world")',
       lineNumbers: true,
       mode: 'javascript',
       keyMap: 'sublime',
@@ -34,12 +34,12 @@ export default {
       tabSize: 2
     });
   },
-  beforeDestroy() {    
+  beforeDestroy() {
   },
   methods: {
     runScript() {
-      var code = this.codeMirror.getValue();
-      request.post('/script/run', { code, decice_id: 1 }).then((res) => {
+      var script = this.codeMirror.getValue();
+      request.post('/script/run', { script, fileName: '[remote]' }).then((res) => {
         console.log(res);
       });
     },

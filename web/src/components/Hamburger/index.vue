@@ -24,10 +24,10 @@ export default {
   },
   methods: {
     toggleClick() {
-      this.$emit('toggleClick')
+      this.$emit('toggleClick');
     }
   }
-}
+};
 </script>
 
 <style scoped>

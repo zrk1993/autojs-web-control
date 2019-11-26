@@ -1,4 +1,4 @@
-const wshost = 'ws://localhost:3001?token=1232123';
+const wshost = process.env.VUE_APP_WS_HOST;
 
 export default class WebSocketManager {
   static instance = null;

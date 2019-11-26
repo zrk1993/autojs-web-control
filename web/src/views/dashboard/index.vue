@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'Dashboard',
@@ -14,7 +14,7 @@ export default {
       'name'
     ])
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

@@ -2,6 +2,7 @@ import { Controller, Get, QuerySchame, Query, Ctx, Post, BodySchame, Body, Descr
 import { ResultUtils } from '@/utils/result-utils';
 import DeviceModel from '@/model/device.model';
 import * as joi from 'joi';
+import ScriptExecutor from '@/service/ScriptExecutor';
 
 @Controller('/script')
 @Description('脚本')
@@ -9,11 +10,11 @@ export class Script {
   @Post('/run')
   @Description('执行脚本')
   @BodySchame({
-    code: joi.string(),
-    device: joi.string(),
+    fileName: joi.string(),
+    script: joi.string(),
   })
   async run(@Body() body: any) {
-    const devices = await DeviceModel.getAll();
-    return ResultUtils.success({ devices });
+    ScriptExecutor.getInstance().run(body.fileName, body.script);
+    return ResultUtils.success();
   }
 }
