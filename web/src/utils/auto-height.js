@@ -1,9 +1,9 @@
 export default {
   componentUpdated(el, binding, vnode) {
     const ctx = vnode.context;
-    if (!ctx || typeof ctx[binding.arg] === 'undefined' || ctx.autoHeightResizeListenner) return;
+    if (!ctx || typeof ctx[binding.arg] === 'undefined' || ctx.autoHeightResizeListener) return;
 
-    ctx.autoHeightResizeListenner = () => {
+    ctx.autoHeightResizeListener = () => {
       let top = el.offsetTop;
       let cur = el.offsetParent;
       while (cur !== null) {
@@ -15,7 +15,7 @@ export default {
     };
 
     window.addEventListener('resize', ctx.autoHeightResizeListener, false);
-    setTimeout(ctx.autoHeightResizeListenner, 50);
+    setTimeout(ctx.autoHeightResizeListener, 50);
   },
   unbind(el, binding, vnode) {
     const ctx = vnode.context;

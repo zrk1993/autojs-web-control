@@ -8,7 +8,7 @@
           :key="item.value"
           :label="item.label"
           :value="item.value"
-        ></el-option>
+        />
       </el-select>
       <el-select
         v-model="value"
@@ -21,7 +21,7 @@
           :key="item.value"
           :label="item.label"
           :value="item.value"
-        ></el-option>
+        />
       </el-select>
       <el-select
         v-model="value"
@@ -29,28 +29,28 @@
         placeholder="日志级别"
         style="width: 100px; margin-left: 10px;"
       >
-        <el-option label="Verbose" value="Verbose"></el-option>
-        <el-option label="Debug" value="Debug"></el-option>
-        <el-option label="Info" value="Info"></el-option>
-        <el-option label="Warn" value="Warn"></el-option>
-        <el-option label="Error" value="Error"></el-option>
+        <el-option label="Verbose" value="Verbose" />
+        <el-option label="Debug" value="Debug" />
+        <el-option label="Info" value="Info" />
+        <el-option label="Warn" value="Warn" />
+        <el-option label="Error" value="Error" />
       </el-select>
       <el-input
+        v-model="value"
         placeholder="请输入内容"
         size="mini"
         prefix-icon="el-icon-search"
-        v-model="value"
         style="width: 200px; margin-left: 10px;"
-      ></el-input>
+      />
       <div class="actions">
-        <el-button icon="el-icon-circle-close" plain circle size="mini" @click="clearConsole"></el-button>
+        <el-button icon="el-icon-circle-close" plain circle size="mini" @click="clearConsole" />
       </div>
     </div>
     <div
-      class="log-scroller"
       ref="logScroller"
-      :style="{ 'max-height': maxHeight + 'px' }"
       v-auto-height:maxHeight="-10"
+      class="log-scroller"
+      :style="{ 'max-height': maxHeight + 'px' }"
     >
       <div v-for="(item, index) in logs" :key="index">{{ item.log }}</div>
     </div>
@@ -58,48 +58,48 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import request from "@/utils/request";
-import WebSocketManager from "@/WebSocketClientManager";
+import { mapGetters } from 'vuex';
+// import request from '@/utils/request';
+import WebSocketManager from '@/WebSocketClientManager';
 
 export default {
-  name: "DeviceLog",
+  name: 'DeviceLog',
   data() {
     return {
       maxHeight: 500,
       messageListener: null,
       options: [
         {
-          value: "选项1",
-          label: "黄金糕"
+          value: '选项1',
+          label: '黄金糕'
         },
         {
-          value: "选项2",
-          label: "双皮奶"
+          value: '选项2',
+          label: '双皮奶'
         },
         {
-          value: "选项3",
-          label: "蚵仔煎"
+          value: '选项3',
+          label: '蚵仔煎'
         },
         {
-          value: "选项4",
-          label: "龙须面"
+          value: '选项4',
+          label: '龙须面'
         },
         {
-          value: "选项5",
-          label: "北京烤鸭"
+          value: '选项5',
+          label: '北京烤鸭'
         }
       ],
-      value: "",
+      value: '',
       logs: []
     };
   },
   computed: {
-    ...mapGetters(["name"])
+    ...mapGetters(['name'])
   },
   created() {
     this.messageListener = message => {
-      if (message.type === "log") {
+      if (message.type === 'log') {
         this.logs.push(message.data);
         this.$refs.logScroller.scrollTop = this.$refs.logScroller.scrollHeight;
       }
@@ -133,7 +133,7 @@ export default {
 }
 .tool-bar .actions {
   flex-grow: 1;
-  text-align: right;
+  margin-left: 25px;
   padding-right: 15px;
 }
 .log-scroller {
