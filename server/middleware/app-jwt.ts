@@ -5,7 +5,7 @@ import unless = require('koa-unless');
 // import { redis } from '../utils/redis';
 import { ResultUtils } from '@/utils/result-utils';
 
-const secret = 'hahahahahah' + moment().format('YYYYMMDD');
+export const secret = 'hahahahahah' + moment().format('YYYYMMDD');
 
 export const sign = (data: any): string => {
   const token = jwt.sign(data, secret, { expiresIn: '6h' });
@@ -19,8 +19,12 @@ const JWTTokenError = {
 };
 
 export const verify = (ctx: Koa.Context): Promise<string | any> => {
+  const token = ctx.query.token || ctx.header.authorization || ctx.cookies.get('authorization');
+  return verifyToken(token);
+};
+
+export async function verifyToken(token: string) {
   return new Promise((resolve, reject) => {
-    const token = ctx.query.token || ctx.header.authorization || ctx.cookies.get('authorization');
     jwt.verify(token, secret, (error: Error, decoded: any) => {
       if (error) {
         error.message = JWTTokenError[error.name];
@@ -31,7 +35,7 @@ export const verify = (ctx: Koa.Context): Promise<string | any> => {
       }
     });
   });
-};
+}
 
 export const middleware: any = async (ctx: Koa.Context, next: () => void) => {
   try {

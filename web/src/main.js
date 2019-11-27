@@ -40,9 +40,15 @@ Vue.config.productionTip = false;
 WebSocketClientManager.getInstance().addConnectStatusListener((status) => {
   Message({
     message: 'websocket connect status : ' + status,
-    type: 'info',
+    type: status === 'connect' ? 'success' : 'info',
     duration: 5 * 1000
   });
+});
+
+WebSocketClientManager.getInstance().addMessageListener((msg) => {
+  if (msg.type === 'log') {
+    console.log(msg.data.device.device_name + msg.data.log);
+  }
 });
 
 new Vue({

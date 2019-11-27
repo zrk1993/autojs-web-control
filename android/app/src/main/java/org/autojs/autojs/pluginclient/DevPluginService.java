@@ -115,7 +115,7 @@ public class DevPluginService {
     }
 
     @AnyThread
-    public Observable<JsonWebSocket> connectToServer(String host) {
+    public Observable<JsonWebSocket> connectToServer(String host, String deviceName, String connectCode) {
         int port = PORT;
         String ip = host;
         int i = host.lastIndexOf(':');
@@ -125,13 +125,13 @@ public class DevPluginService {
         }
         mConnectionState.onNext(new State(State.CONNECTING));
 
-        return socket(ip, port)
+        return socket(ip, port, deviceName, connectCode)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(this::onSocketError);
     }
 
     @AnyThread
-    private Observable<JsonWebSocket> socket(String ip, int port) {
+    private Observable<JsonWebSocket> socket(String ip, int port, String deviceName, String connectCode) {
         OkHttpClient client = new OkHttpClient.Builder()
                 .readTimeout(0, TimeUnit.MILLISECONDS)
                 .build();
@@ -140,7 +140,7 @@ public class DevPluginService {
             url = "ws://" + url;
         }
         return Observable.just(new JsonWebSocket(client, new Request.Builder()
-                .url(url)
+                .url(url+"?device_name=" + deviceName + "&connect_code=" + connectCode)
                 .build()))
                 .doOnNext(socket -> {
                     mSocket = socket;

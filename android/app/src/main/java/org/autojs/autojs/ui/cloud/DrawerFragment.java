@@ -291,7 +291,7 @@ public class DrawerFragment extends androidx.fragment.app.Fragment {
                 .title(R.string.text_server_address)
                 .input("", host, (dialog, input) -> {
                     Pref.saveServerAddress(input.toString());
-                    DevPluginService.getInstance().connectToServer(input.toString())
+                    DevPluginService.getInstance().connectToServer(input.toString(), "a1", "1234")
                             .subscribe(Observers.emptyConsumer(), this::onConnectException);
                 })
                 .cancelListener(dialog -> setChecked(mConnectionItem, false))

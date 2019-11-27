@@ -35,7 +35,13 @@ async function main() {
   });
 
   WebSocketManager.getInstance().addDeviceLogListener((client, data) => {
-    console.log(data.data.log);
+    console.log(client.device.device_name + data.data.log);
+    data.data.device = client.device;
+    WebSocketManager.getInstance().getClients().forEach((c) => {
+      if (c.type === 'admin') {
+        WebSocketManager.getInstance().sendMessage(c, data);
+      }
+    });
   });
 }
 

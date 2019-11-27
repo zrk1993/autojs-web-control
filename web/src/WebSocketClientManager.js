@@ -1,3 +1,4 @@
+import { getToken } from '@/utils/auth';
 const wshost = process.env.VUE_APP_WS_HOST;
 
 export default class WebSocketManager {
@@ -18,7 +19,7 @@ export default class WebSocketManager {
 
   connect() {
     console.log('WebSocketManager 正在连接 -> ' + wshost);
-    this.ws = new WebSocket(wshost);
+    this.ws = new WebSocket(`${wshost}?token=${getToken()}`);
 
     this.ws.onopen = () => {
       console.log('WebSocketManager 连接成功！');

@@ -19,7 +19,7 @@ export class QueryBuilder {
   }
 
   private constructor({ table, queryFunction }) {
-    this.$table = 't_' + table;
+    this.$table = table;
     this.queryFunction = queryFunction;
   }
 

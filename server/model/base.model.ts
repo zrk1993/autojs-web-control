@@ -1,6 +1,7 @@
 import db from '@/utils/db';
 
 export default class BaseService<T> {
+  $db = db;
   $tableName: string;
   $primaryKey: string;
   $tableStructure: T;
