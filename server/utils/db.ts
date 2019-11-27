@@ -9,7 +9,7 @@ const logger = getLogger('db.ts');
 
 const orm = new DBM({
   connectionLimit: 10,
-  host: 'www.calibur.pro',
+  host: 'www.test.pro',
   port: 3306,
   user: 'root',
   password: 'Mysql@123456',
