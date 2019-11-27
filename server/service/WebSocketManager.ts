@@ -95,8 +95,10 @@ export default class WebSocketManager extends EventEmitter {
         return;
       }
     } else {
-      client.terminate();
-      return;
+      // client.terminate();
+      // return;
+      client.type = 'device';
+      client.device = { device_name: '未知设备' };
     }
 
     client.ip = req.connection.remoteAddress || (req.headers['x-forwarded-for'] as any || '').split(/\s*,\s*/)[0];

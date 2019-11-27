@@ -96,9 +96,22 @@ export const constantRoutes = [
     children: [
       {
         path: 'index',
-        name: 'Script',
+        name: '脚本',
         component: () => import('@/views/script/index'),
-        meta: { title: 'Script', icon: 'form' }
+        meta: { title: '脚本编辑', icon: 'form' }
+      }
+    ]
+  },
+
+  {
+    path: '/device_log',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: '日志',
+        component: () => import('@/components/DeviceLog/index'),
+        meta: { title: '运行日志', icon: 'form' }
       }
     ]
   },
