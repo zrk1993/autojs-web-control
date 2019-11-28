@@ -1,6 +1,7 @@
 import { Controller, Get, QuerySchame, Query, Ctx, Post, BodySchame, Body, Description } from '@/common/application';
 import { ResultUtils } from '@/utils/result-utils';
 import DeviceModel from '@/model/device.model';
+import DeviceManager from '@/service/DeviceManager';
 
 @Controller('/device')
 @Description('设备')
@@ -29,6 +30,13 @@ export class Auth {
   @Post('/remove_device')
   @Description('删除设备')
   async remove_device(@Body() body: any) {
+    await DeviceModel.deleteById(body.devicd_id);
+    return ResultUtils.success();
+  }
+
+  @Get('/online/list')
+  @Description('已连接设备列表')
+  async onlineList(@Body() body: any) {
     await DeviceModel.deleteById(body.devicd_id);
     return ResultUtils.success();
   }

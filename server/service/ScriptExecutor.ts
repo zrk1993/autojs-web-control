@@ -1,4 +1,4 @@
-import WebSocketManager from './WebSocketManager';
+import { WebSocketManager } from './WebSocketManager';
 
 export default class ScriptExecutor {
   private static instance: ScriptExecutor;

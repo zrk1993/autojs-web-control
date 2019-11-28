@@ -11,7 +11,8 @@ import * as koaLogger from 'koa-logger';
 import config from './config';
 import * as router from './router';
 
-import WebSocketManager from '@/service/WebSocketManager';
+import { WebSocketManager } from '@/service/WebSocketManager';
+import { DeviceManager } from '@/service/DeviceManager';
 
 async function main() {
   const app = await createApplication(__dirname, Object.keys(router).map(k => router[k]), {
@@ -27,16 +28,17 @@ async function main() {
   app.listen(config.port);
 
   WebSocketManager.init(app.getHttpServer());
+  DeviceManager.init();
 
   WebSocketManager.getInstance().addClientStatusChangeListener((client, status) => {
-    if (status === 'connection') {
+    if (status === 'open') {
       WebSocketManager.getInstance().sendMessage(client, { type: 'hello', data: { server_version: 2 } });
     }
   });
 
   WebSocketManager.getInstance().addDeviceLogListener((client, data) => {
-    console.log(client.device.device_name + data.data.log);
-    data.data.device = client.device;
+    console.log(client.extData.device_name + data.data.log);
+    data.data.device = client.extData;
     WebSocketManager.getInstance().getClients().forEach((c) => {
       if (c.type === 'admin') {
         WebSocketManager.getInstance().sendMessage(c, data);

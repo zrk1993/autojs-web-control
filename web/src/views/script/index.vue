@@ -5,49 +5,49 @@
         <i
           class="el-icon-edit-outline"
           style="font-size: 15px;font-weight: 600; margin: 0 5px 0 3px;"
-        ></i>
+        />
         <span>新建脚本.js</span>
       </div>
       <div class="actions">
-        <el-button @click="runScript" icon="el-icon-delete" plain circle size="mini"></el-button>&nbsp;&nbsp;
-        <el-button @click="runScript" icon="el-icon-upload" plain circle size="mini"></el-button>&nbsp;&nbsp;
-        <el-button @click="runScript" icon="el-icon-caret-right" type="success" plain circle size="mini"></el-button>
+        <el-button icon="el-icon-delete" plain circle size="mini" @click="runScript" />&nbsp;&nbsp;
+        <el-button icon="el-icon-upload" plain circle size="mini" @click="runScript" />&nbsp;&nbsp;
+        <el-button icon="el-icon-caret-right" type="success" plain circle size="mini" @click="runScript" />
       </div>
-      <div></div>
+      <div />
     </div>
     <div style="position: relative;">
       <article id="code" ref="code" :style="{ height: codeHeight }" />
-      <div class="divide" ref="divide">Logcat</div>
+      <div ref="divide" class="divide">Logcat</div>
       <device-log class="device_log" />
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import request from "@/utils/request";
-import DeviceLog from "@/components/DeviceLog";
+import { mapGetters } from 'vuex';
+import request from '@/utils/request';
+import DeviceLog from '@/components/DeviceLog';
 
 export default {
-  name: "Dashboard",
+  name: 'Dashboard',
   components: {
     DeviceLog
   },
   data() {
     return {
       codeMirror: null,
-      codeHeight: document.body.clientHeight * 0.6 + "px"
+      codeHeight: document.body.clientHeight * 0.6 + 'px'
     };
   },
   computed: {
-    ...mapGetters(["name"])
+    ...mapGetters(['name'])
   },
   mounted() {
-    this.codeMirror = window.CodeMirror(document.getElementById("code"), {
+    this.codeMirror = window.CodeMirror(document.getElementById('code'), {
       value: 'toastLog("Hello world")',
       lineNumbers: true,
-      mode: "javascript",
-      keyMap: "sublime",
+      mode: 'javascript',
+      keyMap: 'sublime',
       autoCloseBrackets: true,
       matchBrackets: true,
       showCursorWhenSelecting: true,
@@ -57,29 +57,29 @@ export default {
 
     const codeMirrorWrapEle = this.$refs.code;
     const divideRef = this.$refs.divide;
-    var mouseDownX,
-      mouseDownY,
-      initX,
-      initY,
-      doc_onmousemove,
-      doc_onmouseup,
-      flag = false,
-      isMoving = false;
+    // var mouseDownX;
+    var mouseDownY;
+    // var initX;
+    var initY;
+    var doc_onmousemove;
+    var doc_onmouseup;
+    var flag = false;
+    var isMoving = false;
 
     divideRef.onmousedown = function(e) {
-      var obj = divideRef; //移动目标元素
-      //表示鼠标已按下
+      var obj = divideRef; // 移动目标元素
+      // 表示鼠标已按下
       flag = true;
 
-      //鼠标按下时的鼠标所在的X，Y坐标
-      mouseDownX = e.clientX;
+      // 鼠标按下时的鼠标所在的X，Y坐标
+      // mouseDownX = e.clientX;
       mouseDownY = e.clientY;
 
-      //初始位置的X，Y 坐标
-      initX = obj.offsetLeft;
+      // 初始位置的X，Y 坐标
+      // initX = obj.offsetLeft;
       initY = obj.offsetTop;
 
-      //保存原来绑定在document的事件
+      // 保存原来绑定在document的事件
       doc_onmousemove = document.onmousemove;
       doc_onmouseup = document.onmouseup;
 
@@ -91,9 +91,9 @@ export default {
           // obj.style.left =
           //   parseInt(e.clientX) - parseInt(mouseDownX) + parseInt(initX) + "px";
           codeMirrorWrapEle.style.height =
-            parseInt(e.clientY) - parseInt(mouseDownY) + parseInt(initY) + "px";
+            parseInt(e.clientY) - parseInt(mouseDownY) + parseInt(initY) + 'px';
 
-          window.dispatchEvent(new Event("resize"));
+          window.dispatchEvent(new Event('resize'));
           isMoving = true;
           setTimeout(function() {
             isMoving = false;
@@ -103,10 +103,10 @@ export default {
       }
       function stop() {
         flag = false;
-        document.onmousemove = doc_onmousemove; //原来的事件回复绑定
+        document.onmousemove = doc_onmousemove; // 原来的事件回复绑定
         document.onmouseup = doc_onmouseup;
       }
-      return false; //可以防止在拖动的时候选中文本
+      return false; // 可以防止在拖动的时候选中文本
     };
   },
   beforeDestroy() {},
@@ -114,7 +114,7 @@ export default {
     runScript() {
       var script = this.codeMirror.getValue();
       request
-        .post("/script/run", { script, fileName: "[remote]" })
+        .post('/script/run', { script, fileName: '[remote]' })
         .then(res => {
           console.log(res);
         });
