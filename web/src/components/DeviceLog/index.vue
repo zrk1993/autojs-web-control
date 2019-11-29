@@ -2,12 +2,12 @@
   <div class="log-container">
     <!-- <div class="title">Logcat</div> -->
     <div class="tool-bar">
-      <el-select v-model="value" size="mini" placeholder="请选择设备" style="width: 120px;">
+      <el-select v-model="deviceSelect" size="mini" placeholder="请选择设备" style="width: 120px;">
         <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
+          v-for="item in onlineDevices"
+          :key="item.device_name"
+          :label="item.device_name"
+          :value="item.device_name"
         />
       </el-select>
       <el-select
@@ -59,7 +59,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-// import request from '@/utils/request';
+import request from '@/utils/request';
 import WebSocketManager from '@/WebSocketClientManager';
 
 export default {
@@ -68,6 +68,8 @@ export default {
     return {
       maxHeight: 500,
       messageListener: null,
+      onlineDevices: [],
+      deviceSelect: null,
       options: [
         {
           value: '选项1',
@@ -103,13 +105,25 @@ export default {
         this.logs.push(message.data);
         this.$refs.logScroller.scrollTop = this.$refs.logScroller.scrollHeight;
       }
+
+      if (message.type === 'device_change') {
+        this.getOnlineDevices();
+      }
     };
     WebSocketManager.getInstance().addMessageListener(this.messageListener);
+
+    this.getOnlineDevices();
   },
   destroyed() {
     WebSocketManager.getInstance().removeMessageListener(this.messageListener);
   },
   methods: {
+    getOnlineDevices() {
+      this.deviceSelect = null;
+      request('/device/online/list').then((res) => {
+        this.onlineDevices = res.data;
+      });
+    },
     clearConsole() {
       this.logs = [];
     }

@@ -2,7 +2,6 @@ import * as querystring from 'querystring';
 import * as http from 'http';
 import getLogger from '@/utils/log4js';
 import DeviceModel from '@/model/device.model';
-import { verifyToken } from '@/middleware/app-jwt';
 import { WebSocketManager, WebSocketExt } from './WebSocketManager';
 
 const logger = getLogger('WebSocketManager');
@@ -23,6 +22,9 @@ export class DeviceManager {
     }
     WebSocketManager.getInstance().addClientRequestListeners(async (req) => {
       const params = querystring.parse(req.url.replace('/?', ''));
+      if (params.token) {
+        return { type: null };
+      }
       if (params.device_name && params.connect_code) {
         const device = await DeviceModel.getByDeviceName(params.device_name as string);
         if (!device || device.connect_code != params.connect_code) {
@@ -34,30 +36,24 @@ export class DeviceManager {
         return { type: 'device', extData: { device_name: '未知设备' } };
       }
     });
+
+    WebSocketManager.getInstance().addClientStatusChangeListener((client, status) => {
+      if (status === 'open') {
+        WebSocketManager.getInstance().sendMessage(client, { type: 'hello', data: { server_version: 2 } });
+      }
+    });
+  }
+
+  public getOnlineDevices() {
+    const deviceClients = [];
+    WebSocketManager.getInstance().getClients().forEach((c) => {
+      if (c.type === 'device') {
+        deviceClients.push({
+          ip: c.ip,
+          device_name: c.extData.device_name,
+        });
+      }
+    });
+    return deviceClients;
   }
 }
-
-// if (params.device_name && params.connect_code) {
-//   const device = await DeviceModel.getByDeviceName(params.device_name as string);
-//   if (!device || device.connect_code != params.connect_code) {
-//     client.terminate();
-//     return;
-//   } else {
-//     client.type = 'device';
-//     client.device = device;
-//   }
-// } else if (params.token) {
-//   try {
-//     const data = await verifyToken(params.token as string);
-//     client.type = 'admin';
-//     client.admin = data;
-//   } catch (error) {
-//     client.terminate();
-//     return;
-//   }
-// } else {
-//   // client.terminate();
-//   // return;
-//   client.type = 'device';
-//   client.device = { device_name: '未知设备' };
-// }

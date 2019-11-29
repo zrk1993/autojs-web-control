@@ -65,7 +65,7 @@ export const constantRoutes = [
       {
         path: 'list',
         name: '设备列表',
-        component: () => import('@/views/table/index'),
+        component: () => import('@/views/device/index'),
         meta: { title: '设备列表', icon: 'table' }
       },
       {
@@ -79,13 +79,29 @@ export const constantRoutes = [
 
   {
     path: '/script',
+    redirect: '/script/list',
+    name: '脚本管理',
+    meta: { title: '脚本管理', icon: 'example' },
     component: Layout,
     children: [
       {
-        path: 'index',
-        name: '脚本管理',
+        path: 'list',
+        name: '脚本列表',
+        component: () => import('@/views/script/list'),
+        meta: { title: '脚本列表', icon: 'form' }
+      },
+      {
+        path: 'add',
+        name: '新建脚本',
         component: () => import('@/views/script/index'),
-        meta: { title: '脚本编辑', icon: 'form' }
+        meta: { title: '新建脚本', icon: 'form' }
+      },
+      {
+        path: 'edit',
+        hidden: true,
+        name: '编辑脚本',
+        component: () => import('@/views/script/index'),
+        meta: { title: '编辑脚本', icon: 'form' }
       }
     ]
   },

@@ -6,7 +6,7 @@ import { ResultUtils } from '@/utils/result-utils';
 const logger = getLogger('error-handle.ts');
 
 export default () => {
-  return async (ctx: Koa.Context, next: () => void) => {
+  return async (ctx: Koa.Context, next: () => Promise<void>) => {
     try {
       await next();
     } catch (error) {

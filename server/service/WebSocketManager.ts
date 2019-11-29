@@ -111,13 +111,6 @@ export class WebSocketManager extends EventEmitter {
       });
     });
 
-    client.addListener('open', () => {
-      logger.info('WebSocket.Client open ip -> ' + client.ip);
-      clientStatusChangeListeners.forEach((listener) => {
-        listener(client, 'open');
-      });
-    });
-
     client.addListener('error', (err: Error) => {
       logger.info('WebSocket.Client error ip -> ' + client.ip + ' message-> ' + err.message);
       clientStatusChangeListeners.forEach((listener) => {
@@ -144,6 +137,11 @@ export class WebSocketManager extends EventEmitter {
     client.isAlive = true;
     client.addEventListener('pong', () => {
       client.isAlive = true;
+    });
+
+    logger.info('WebSocket.Client open ip -> ' + client.ip);
+    clientStatusChangeListeners.forEach((listener) => {
+      listener(client, 'open');
     });
   }
 

@@ -1,15 +1,23 @@
 import { Controller, Get, QuerySchame, Query, Ctx, Post, BodySchame, Body, Description } from '@/common/application';
 import { ResultUtils } from '@/utils/result-utils';
 import DeviceModel from '@/model/device.model';
-import DeviceManager from '@/service/DeviceManager';
+import { DeviceManager } from '@/service/DeviceManager';
 
 @Controller('/device')
 @Description('设备')
-export class Auth {
+export class Device {
   @Get('/get_device_list')
   @Description('获取设备列表')
   async get_device_list() {
-     const devices = await DeviceModel.getAll();
+    const devices = await DeviceModel.getAll();
+    const onlineDevices = DeviceManager.getInstance().getOnlineDevices();
+    devices.forEach((d) => {
+      const ol = onlineDevices.find(i => i.device_name === d.device_name);
+      if (ol) {
+        d.is_online = true;
+        d.ip = ol.ip;
+      }
+    });
     return ResultUtils.success({ devices });
   }
 
@@ -37,7 +45,7 @@ export class Auth {
   @Get('/online/list')
   @Description('已连接设备列表')
   async onlineList(@Body() body: any) {
-    await DeviceModel.deleteById(body.devicd_id);
-    return ResultUtils.success();
+    const onlineDevices = DeviceManager.getInstance().getOnlineDevices();
+    return ResultUtils.success(onlineDevices);
   }
 }

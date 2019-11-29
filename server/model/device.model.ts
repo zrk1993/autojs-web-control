@@ -1,12 +1,13 @@
 import BaseModel from './base.model';
 
-export const tableName = 't_device';
+export const tableName = 'device';
 export interface ITableStructure {
   device_id?: number,
   device_name?: string,
   connect_code?: string,
   create_time?: string,
-  is_online?: number,
+  is_online?: any,
+  [propname: string]: any
 };
 
 export class DeviceModel extends BaseModel<ITableStructure> {
