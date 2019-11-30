@@ -1,11 +1,7 @@
 import { EventEmitter } from 'events';
 import * as http from 'http';
 import * as WebSocket from 'ws';
-import * as querystring from 'querystring';
 import getLogger from '@/utils/log4js';
-import DeviceModel from '@/model/device.model';
-
-import { verifyToken } from '@/middleware/app-jwt';
 
 const logger = getLogger('WebSocketManager');
 

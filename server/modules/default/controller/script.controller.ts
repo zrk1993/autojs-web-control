@@ -15,7 +15,7 @@ export class Script {
     script: joi.string(),
   })
   async run(@Body() body: any) {
-    ScriptExecutor.getInstance().run(body.fileName, body.script);
+    ScriptExecutor.getInstance().run(body.devices, body.fileName, body.script);
     return ResultUtils.success();
   }
 

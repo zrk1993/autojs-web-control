@@ -14,6 +14,7 @@ import store from './store';
 import router from './router';
 import WebSocketClientManager from './WebSocketClientManager';
 import autoHeight from './utils/auto-height';
+import timeFormatFilter from './utils/timeFormatFilter';
 
 import '@/icons'; // icon
 import '@/permission'; // permission control
@@ -38,6 +39,8 @@ Vue.use(ElementUI, { locale });
 
 Vue.directive('auto-height', autoHeight);
 
+Vue.use(timeFormatFilter, null);
+
 Vue.config.productionTip = false;
 
 WebSocketClientManager.getInstance().addConnectStatusListener((status) => {
@@ -51,6 +54,10 @@ WebSocketClientManager.getInstance().addConnectStatusListener((status) => {
 WebSocketClientManager.getInstance().addMessageListener((msg) => {
   if (msg.type === 'log') {
     console.log(msg.data.device.device_name + msg.data.log);
+  }
+
+  if (msg.type === 'device_change') {
+    store.dispatch('device/updateOnlineDevices');
   }
 });
 

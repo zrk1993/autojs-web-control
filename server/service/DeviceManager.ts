@@ -3,8 +3,9 @@ import * as http from 'http';
 import getLogger from '@/utils/log4js';
 import DeviceModel from '@/model/device.model';
 import { WebSocketManager, WebSocketExt } from './WebSocketManager';
+import moment = require('moment');
 
-const logger = getLogger('WebSocketManager');
+const logger = getLogger('DeviceManager');
 
 export class DeviceManager {
   static instance: DeviceManager;
@@ -25,16 +26,17 @@ export class DeviceManager {
       if (params.token) {
         return { type: null };
       }
-      if (params.device_name && params.connect_code) {
-        const device = await DeviceModel.getByDeviceName(params.device_name as string);
-        if (!device || device.connect_code != params.connect_code) {
-          return { type: null };
-        } else {
-          return { type: 'device', extData: device };
-        }
-      } else {
-        return { type: 'device', extData: { device_name: '未知设备' } };
+      const ip = (req.connection.remoteAddress || (req.headers['x-forwarded-for'] as any || '').split(/\s*,\s*/)[0]).replace(/[^0-9\.]/ig, '');
+
+      let device = await DeviceModel.getByIp(ip);
+      if (!device) {
+        await DeviceModel.insert({ name: ip, ip, create_time: moment().format('YYYY-MM-DD HH:mm:ss') });
       }
+
+      device = await DeviceModel.getByIp(ip);
+      await DeviceModel.updateById(device.device_id, { connect_time: moment().format('YYYY-MM-DD HH:mm:ss') });
+
+      return { type: 'device', extData: device };
     });
 
     WebSocketManager.getInstance().addClientStatusChangeListener((client, status) => {
@@ -55,5 +57,13 @@ export class DeviceManager {
       }
     });
     return deviceClients;
+  }
+
+  public disconnectDeviceByIp(ip: string) {
+    WebSocketManager.getInstance().getClients().forEach((c) => {
+      if (c.ip === ip) {
+        c.terminate();
+      }
+    });
   }
 }

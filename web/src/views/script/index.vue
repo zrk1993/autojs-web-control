@@ -6,38 +6,30 @@
           class="el-icon-edit-outline"
           style="font-size: 15px;font-weight: 600; margin: 0 5px 0 3px;"
         />
-        <span>{{scriptData.script_name}}.js</span>
+        <span>{{ scriptData.script_name }}.js</span>
       </div>
-      <div class="actions">
+      <div class="actions"></div>
+      <div class="mr20">
         <el-button
+          v-loading="bustling"
           icon="el-icon-suitcase"
           plain
           circle
           size="mini"
           @click="saveScript"
-          v-loading="bustling"
-        />&nbsp;&nbsp;
-        <el-button
-          icon="el-icon-caret-right"
-          plain
-          circle
-          size="mini"
-          v-loading="bustling"
-          @click="runScript"
         />
       </div>
-      <div />
     </div>
     <div style="position: relative;">
       <article
         id="code"
         ref="code"
-        :style="{ height: codeHeight }"
         v-loading="listLoading"
+        :style="{ height: codeHeight }"
         element-loading-text="Loading"
       />
       <div ref="divide" class="divide">Logcat</div>
-      <device-log class="device_log" />
+      <device-log class="device_log" :showRun="true" @run="runScript" />
     </div>
   </div>
 </template>
@@ -57,6 +49,7 @@ export default {
       listLoading: false,
       bustling: false,
       codeMirror: null,
+      saveListener: null,
       codeHeight: document.body.clientHeight * 0.6 + "px",
       scriptData: {
         script_id: null,
@@ -71,6 +64,15 @@ export default {
   },
   created() {
     this.scriptData.script_id = this.$route.query.id;
+    this.saveListener = e => {
+      if (
+        e.keyCode === 83 &&
+        (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)
+      ) {
+        e.preventDefault();
+        this.saveScript();
+      }
+    };
   },
   mounted() {
     if (this.scriptData.script_id) {
@@ -79,8 +81,11 @@ export default {
       this.createCodeMirror();
     }
     this.dragDivide();
+    document.addEventListener("keydown", this.saveListener);
   },
-  beforeDestroy() {},
+  beforeDestroy() {
+    document.removeEventListener("keydown", this.saveListener);
+  },
   methods: {
     fetchData() {
       this.listLoading = true;
@@ -141,14 +146,15 @@ export default {
         tabSize: 2
       });
     },
-    runScript() {
+    runScript(devices) {
       this.bustling = true;
       var script = this.codeMirror.getValue();
       request
-        .post("/script/run", { script, fileName: "[remote]" })
+        .post("/script/run", { script, fileName: this.scriptData.script_name, devices })
         .then(res => {
           console.log(res);
-        }).finally(() => {
+        })
+        .finally(() => {
           this.bustling = false;
         });
     },
@@ -233,6 +239,7 @@ export default {
 <style lang="css">
 .CodeMirror {
   height: 100%;
+  font-size: 14px;
 }
 </style>
 

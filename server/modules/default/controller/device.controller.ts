@@ -12,10 +12,9 @@ export class Device {
     const devices = await DeviceModel.getAll();
     const onlineDevices = DeviceManager.getInstance().getOnlineDevices();
     devices.forEach((d) => {
-      const ol = onlineDevices.find(i => i.device_name === d.device_name);
+      const ol = onlineDevices.find(i => i.ip === d.ip);
       if (ol) {
         d.is_online = true;
-        d.ip = ol.ip;
       }
     });
     return ResultUtils.success({ devices });
@@ -38,7 +37,9 @@ export class Device {
   @Post('/remove_device')
   @Description('删除设备')
   async remove_device(@Body() body: any) {
+    const devide = await DeviceModel.getById(body.devicd_id);
     await DeviceModel.deleteById(body.devicd_id);
+    DeviceManager.getInstance().disconnectDeviceByIp(devide.ip);
     return ResultUtils.success();
   }
 

@@ -42,6 +42,9 @@ export default {
       };
     }
   },
+  created() {
+    this.$store.dispatch('device/updateOnlineDevices');
+  },
   methods: {
     handleClickOutside() {
       this.$store.dispatch('app/closeSideBar', { withoutAnimation: false });

@@ -3,10 +3,10 @@ import BaseModel from './base.model';
 export const tableName = 'device';
 export interface ITableStructure {
   device_id?: number,
-  device_name?: string,
-  connect_code?: string,
+  name?: string,
+  ip?: string,
   create_time?: string,
-  is_online?: any,
+  connect_time?: string,
   [propname: string]: any
 };
 
@@ -18,6 +18,10 @@ export class DeviceModel extends BaseModel<ITableStructure> {
 
   async getByDeviceName(device_name: string) {
     return this.$db.table(tableName).where({ device_name }).findOrEmpty();
+  }
+
+  async getByIp(ip: string) {
+    return this.$db.table(tableName).where({ ip }).findOrEmpty();
   }
 
 }
