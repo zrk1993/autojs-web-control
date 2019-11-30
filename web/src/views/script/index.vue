@@ -9,13 +9,20 @@
         <span>{{scriptData.script_name}}.js</span>
       </div>
       <div class="actions">
-        <el-button icon="el-icon-upload" plain circle size="mini" @click="saveScript" />&nbsp;&nbsp;
         <el-button
-          icon="el-icon-caret-right"
-          type="success"
+          icon="el-icon-suitcase"
           plain
           circle
           size="mini"
+          @click="saveScript"
+          v-loading="bustling"
+        />&nbsp;&nbsp;
+        <el-button
+          icon="el-icon-caret-right"
+          plain
+          circle
+          size="mini"
+          v-loading="bustling"
           @click="runScript"
         />
       </div>
@@ -48,6 +55,7 @@ export default {
   data() {
     return {
       listLoading: false,
+      bustling: false,
       codeMirror: null,
       codeHeight: document.body.clientHeight * 0.6 + "px",
       scriptData: {
@@ -79,7 +87,7 @@ export default {
       request({
         url: "/script/get_script",
         method: "get",
-        params: { id: this.script_id }
+        params: { id: this.scriptData.script_id }
       })
         .then(res => {
           this.scriptData = res.data;
@@ -90,7 +98,7 @@ export default {
         });
     },
     saveScript() {
-      this.listLoading = true;
+      this.bustling = true;
       this.scriptData.script = this.codeMirror.getValue();
       request({
         url: this.scriptData.script_id
@@ -117,7 +125,7 @@ export default {
           }
         })
         .finally(() => {
-          this.listLoading = false;
+          this.bustling = false;
         });
     },
     createCodeMirror() {
@@ -134,11 +142,14 @@ export default {
       });
     },
     runScript() {
+      this.bustling = true;
       var script = this.codeMirror.getValue();
       request
         .post("/script/run", { script, fileName: "[remote]" })
         .then(res => {
           console.log(res);
+        }).finally(() => {
+          this.bustling = false;
         });
     },
     changeName() {
