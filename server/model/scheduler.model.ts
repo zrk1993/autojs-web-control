@@ -1,24 +1,27 @@
 import BaseModel from './base.model';
 
-export const tableName = 't_divice';
+export const tableName = 'scheduler';
 export interface ITableStructure {
-  task_id?: number,
-  task_name?: string, // 任务名
-  device_id?: number, // 设备
-  script_id?: number, // 脚本
-  script_args?: string, // 运行参数
-  create_time?: string,
-  start_time?: string,
-  finish_time?: string,
-  status?: string,
-  task_result?: string, // 运行结果
-  batch_number?: string, // 任务批次号
+  scheduler_id?: number,
+  scheduler_name?: string, // 任务名
+  cron_time?: string, // 运行参数
+  last_execute_time?: string,
+  script_id?: string,
+  device_ids?: string,
+  active: number, // 是否执行
 };
 
 export class DeviceModel extends BaseModel<ITableStructure> {
 
   constructor() {
     super({ tableName });
+  }
+
+  getSchedulerList() {
+    const sql = `
+    SELECT * FROM t_scheduler sd
+    LEFT JOIN t_script sc ON sc.script_id = sd.script_id`;
+    return this.$db.query(sql);
   }
 
 }
