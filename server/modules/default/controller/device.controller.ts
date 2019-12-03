@@ -47,6 +47,17 @@ export class Device {
     return ResultUtils.success();
   }
 
+  @Post('/disconnect_device')
+  @Description('断开连接')
+  @BodySchame({
+    device_id: joi.number()
+  })
+  async disconnect_device(@Body() body: any) {
+    const device = await DeviceModel.getById(body.device_id);
+    DeviceManager.getInstance().disconnectDeviceByIp(device.ip);
+    return ResultUtils.success();
+  }
+
   @Get('/online/list')
   @Description('已连接设备列表')
   async onlineList(@Body() body: any) {

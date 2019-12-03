@@ -4,7 +4,7 @@ import getLogger from '@/utils/log4js';
 import { verifyToken } from '@/middleware/app-jwt';
 import { WebSocketManager, WebSocketExt } from './WebSocketManager';
 
-const logger = getLogger('WebSocketManager');
+const logger = getLogger('AdminSocketManager');
 
 export class AdminSocketManager {
   static instance: AdminSocketManager;

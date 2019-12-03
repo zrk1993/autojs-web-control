@@ -33,15 +33,24 @@
       </el-table-column>
       <el-table-column class-name="status-col" label="是否在线" align="center">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.is_online | statusFilter">{{ scope.row.is_online ? '在线' : '离线' }}</el-tag>
+          <el-tag :type="scope.row.is_online | statusFilter" v-if="scope.row.is_online">在线</el-tag>
+          <el-tag :type="scope.row.is_online | statusFilter" v-else>离线</el-tag>
         </template>
       </el-table-column>
       <el-table-column align="center" label="操作">
         <template slot-scope="scope">
-          <el-popover v-model="scope.row.visible" placement="top" width="120">
-            <p class="tac">您确定删除吗？</p>
+          <el-popover v-model="scope.row.visible" placement="top" width="160" class="mr10" v-if="scope.row.is_online">
+            <p class="tac">您确定断开连接吗？</p>
             <div class="tac m0">
               <el-button size="mini" type="text" @click="scope.row.visible = false">取消</el-button>
+              <el-button type="primary" size="mini" @click="disconnectDevice(scope.row.device_id)">确定</el-button>
+            </div>
+            <el-button slot="reference" type="warning" icon="el-icon-connection" circle size="mini" />
+          </el-popover>
+          <el-popover v-model="scope.row.visible2" placement="top" width="120">
+            <p class="tac">您确定删除吗？</p>
+            <div class="tac m0">
+              <el-button size="mini" type="text" @click="scope.row.visible2 = false">取消</el-button>
               <el-button type="primary" size="mini" @click="removeDevice(scope.row.device_id)">确定</el-button>
             </div>
             <el-button slot="reference" type="danger" icon="el-icon-delete" circle size="mini" />
@@ -71,19 +80,18 @@ export default {
     changeName(device_id) {
       this.$prompt("请输入新的设备名称", "提示", {
         confirmButtonText: "确定",
-        cancelButtonText: "取消",
-      })
-        .then(({ value }) => {
-          this.listLoading = true;
-          request({
-            url: "/device/update_device",
-            method: "post",
-            data: { device_id, name: value }
-          }).then(res => {
-            this.fetchData();
-            this.listLoading = false;
-          });
+        cancelButtonText: "取消"
+      }).then(({ value }) => {
+        this.listLoading = true;
+        request({
+          url: "/device/update_device",
+          method: "post",
+          data: { device_id, name: value }
+        }).then(res => {
+          this.fetchData();
+          this.listLoading = false;
         });
+      });
     },
     removeDevice(id) {
       this.listLoading = true;
@@ -91,9 +99,27 @@ export default {
         url: "/device/remove_device",
         method: "post",
         data: { device_id: id }
-      }).then(res => {
-        this.listLoading = false;
-      });
+      })
+        .then(res => {
+          this.listLoading = false;
+        })
+        .finally(() => {
+          this.listLoading = false;
+        });
+    },
+    disconnectDevice(id) {
+      this.listLoading = true;
+      request({
+        url: "/device/disconnect_device",
+        method: "post",
+        data: { device_id: id }
+      })
+        .then(res => {
+          this.listLoading = false;
+        })
+        .finally(() => {
+          this.listLoading = false;
+        });
     }
   }
 };
