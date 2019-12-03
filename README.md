@@ -4,7 +4,7 @@ AutoJs Web Control
 
 ## USE
 
-connect ip www.calibur.pro
+connect address www.calibur.pro
 
 ## License
 
