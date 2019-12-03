@@ -61,7 +61,7 @@ export class DeviceManager {
 
   public disconnectDeviceByIp(ip: string) {
     WebSocketManager.getInstance().getClients().forEach((c) => {
-      if (c.ip === ip) {
+      if (c.type === 'device' && c.ip === ip) {
         c.terminate();
       }
     });
