@@ -52,7 +52,7 @@ WebSocketClientManager.getInstance().addConnectStatusListener((status) => {
 });
 
 WebSocketClientManager.getInstance().addMessageListener((msg) => {
-  console.log(JSON.stringify(mag));
+  console.log(JSON.stringify(msg));
 
   if (msg.type === 'log') {
     //
