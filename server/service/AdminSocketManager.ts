@@ -45,6 +45,7 @@ export class AdminSocketManager {
       if (client.type === 'device') {
         WebSocketManager.getInstance().getClients().forEach((c) => {
           if (c.type === 'admin') {
+            logger.info('WebSocket.Client device_change ip -> ' + client.ip + ' status -> ' + status);
             WebSocketManager.getInstance().sendMessage(c, { type: 'device_change', data: { status } });
           }
         });
