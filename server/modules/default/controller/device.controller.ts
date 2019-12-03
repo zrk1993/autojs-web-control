@@ -1,3 +1,4 @@
+import * as joi from 'joi';
 import { Controller, Get, QuerySchame, Query, Ctx, Post, BodySchame, Body, Description } from '@/common/application';
 import { ResultUtils } from '@/utils/result-utils';
 import DeviceModel from '@/model/device.model';
@@ -30,16 +31,19 @@ export class Device {
   @Post('/update_device')
   @Description('编辑设备')
   async update_device(@Body() body: any) {
-    await DeviceModel.updateById(body.devicd_id, body);
+    await DeviceModel.updateById(body.device_id, body);
     return ResultUtils.success();
   }
 
   @Post('/remove_device')
   @Description('删除设备')
+  @BodySchame({
+    device_id: joi.number()
+  })
   async remove_device(@Body() body: any) {
-    const devide = await DeviceModel.getById(body.devicd_id);
-    await DeviceModel.deleteById(body.devicd_id);
-    DeviceManager.getInstance().disconnectDeviceByIp(devide.ip);
+    const device = await DeviceModel.getById(body.device_id);
+    await DeviceModel.deleteById(body.device_id);
+    DeviceManager.getInstance().disconnectDeviceByIp(device.ip);
     return ResultUtils.success();
   }
 

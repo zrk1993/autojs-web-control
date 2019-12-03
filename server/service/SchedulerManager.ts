@@ -30,7 +30,7 @@ export class SchedulerManager {
     jobs.clear();
     const schedulers = await schedulerModel.getAll();
     for (let i in schedulers) {
-      await SchedulerManager.getInstance().addCronJob(schedulers[i].scheduler_id);
+      if (schedulers[i].active) await SchedulerManager.getInstance().addCronJob(schedulers[i].scheduler_id);
     }
   }
 
@@ -58,6 +58,11 @@ export class SchedulerManager {
 
   private async onTick(scheduler_id: number) {
     const scheduler = await schedulerModel.getById(scheduler_id);
+
+    if (!scheduler.active) {
+      this.removeCronJonb(scheduler.scheduler_id);
+    }
+
     const job = jobs.get(scheduler_id);
     logger.info(`执行定时任务${scheduler.scheduler_name}`);
     const script = await ScriptModel.getById(scheduler.script_id);
