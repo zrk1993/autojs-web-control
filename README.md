@@ -1,6 +1,6 @@
 ## Installation
 
-AutoJs Web 群控系统
+AutoJs Web Control
 
 ## License
 
