@@ -52,8 +52,10 @@ WebSocketClientManager.getInstance().addConnectStatusListener((status) => {
 });
 
 WebSocketClientManager.getInstance().addMessageListener((msg) => {
+  console.log(JSON.stringify(mag));
+
   if (msg.type === 'log') {
-    console.log(msg.data.device.device_name + msg.data.log);
+    //
   }
 
   if (msg.type === 'device_change') {
