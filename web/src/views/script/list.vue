@@ -84,7 +84,7 @@ export default {
       });
     },
     editScript(id) {
-      this.$router.push({ path: "/develop/index", query: { id }});
+      this.$router.push({ path: "/develop", query: { id }});
     },
     removeScript(id) {
       this.listLoading = true;

@@ -124,7 +124,7 @@ export default {
               type: "success"
             });
             this.$router.replace({
-              path: "/script/edit",
+              path: "/develop",
               query: { id: res.data.script_id }
             });
           }

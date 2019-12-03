@@ -79,7 +79,7 @@ export const constantRoutes = [
     component: Layout,
     children: [
       {
-        path: 'add',
+        path: 'list',
         name: '脚本管理',
         component: () => import('@/views/script/list'),
         meta: { title: '脚本管理', icon: 'form' }
@@ -90,11 +90,12 @@ export const constantRoutes = [
   {
     path: '/develop',
     name: '脚本管理',
+    redirect: '/script/list',
     meta: { title: '脚本管理', icon: 'example' },
     component: Layout,
     children: [
       {
-        path: 'index',
+        path: '',
         name: '新建脚本',
         component: () => import('@/views/script/index'),
         meta: { title: '新建脚本', icon: 'form' }
