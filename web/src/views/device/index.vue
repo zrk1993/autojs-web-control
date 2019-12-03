@@ -116,6 +116,7 @@ export default {
       })
         .then(res => {
           this.listLoading = false;
+          this.$store.dispatch('device/updateOnlineDevices');
         })
         .finally(() => {
           this.listLoading = false;
