@@ -80,6 +80,21 @@ export const constantRoutes = [
     children: [
       {
         path: 'add',
+        name: '脚本管理',
+        component: () => import('@/views/script/list'),
+        meta: { title: '脚本管理', icon: 'form' }
+      },
+    ]
+  },
+
+  {
+    path: '/develop',
+    name: '脚本管理',
+    meta: { title: '脚本管理', icon: 'example' },
+    component: Layout,
+    children: [
+      {
+        path: 'index',
         name: '新建脚本',
         component: () => import('@/views/script/index'),
         meta: { title: '新建脚本', icon: 'form' }
