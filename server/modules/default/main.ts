@@ -14,6 +14,7 @@ import * as router from './router';
 import { WebSocketManager } from '@/service/WebSocketManager';
 import { DeviceManager } from '@/service/DeviceManager';
 import { AdminSocketManager } from '@/service/AdminSocketManager';
+import { SchedulerManager } from '@/service/SchedulerManager';
 
 async function main() {
   const app = await createApplication(__dirname, Object.keys(router).map(k => router[k]), {
@@ -31,6 +32,7 @@ async function main() {
   WebSocketManager.init(app.getHttpServer());
   DeviceManager.init();
   AdminSocketManager.init();
+  await SchedulerManager.init();
 }
 
 main();

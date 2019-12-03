@@ -1,15 +1,6 @@
 ## Installation
 
-```bash
-$ npm install
-```
-
-## Running the app
-
-```bash
-# development
-$ npm run start
-```
+AutoJs Web 群控系统
 
 ## License
 

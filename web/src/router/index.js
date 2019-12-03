@@ -79,33 +79,26 @@ export const constantRoutes = [
     component: Layout,
     children: [
       {
-        path: 'list',
-        name: '脚本列表',
-        component: () => import('@/views/script/list'),
-        meta: { title: '脚本列表', icon: 'form' }
-      },
-      {
-        path: 'edit',
-        hidden: true,
-        name: '编辑脚本',
-        component: () => import('@/views/script/index'),
-        meta: { title: '编辑脚本', icon: 'form' }
-      }
-    ]
-  },
-
-  {
-    path: '/script',
-    redirect: '/script/list',
-    name: '脚本管理',
-    meta: { title: '脚本管理', icon: 'example' },
-    component: Layout,
-    children: [
-      {
         path: 'add',
         name: '新建脚本',
         component: () => import('@/views/script/index'),
         meta: { title: '新建脚本', icon: 'form' }
+      },
+    ]
+  },
+
+  {
+    path: '/scheduler',
+    redirect: '/scheduler/list',
+    name: '计划任务',
+    meta: { title: '计划任务', icon: 'example' },
+    component: Layout,
+    children: [
+      {
+        path: 'add',
+        name: '计划任务',
+        component: () => import('@/views/scheduler/list'),
+        meta: { title: '计划任务', icon: 'form' }
       },
     ]
   },
