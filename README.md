@@ -1,6 +1,10 @@
 ## Installation
 
-AutoJs Web 群控系统
+AutoJs Web Control
+
+## USE
+
+connect ip 47.107.251.62
 
 ## License
 
