@@ -42,14 +42,14 @@
       </el-table-column>
       <el-table-column align="center" prop="active" label="计划状态">
         <template slot-scope="scope">
-          <el-tag type="success" v-if="scope.row.active == 1">计划执行中</el-tag>
-          <el-tag type="warning" v-else>已停止</el-tag>
+          <el-tag v-if="scope.row.active == 1" type="success">计划执行中</el-tag>
+          <el-tag v-else type="warning">已停止</el-tag>
         </template>
       </el-table-column>
-            <el-table-column align="center" prop="device_ids" label="执行设备">
+      <el-table-column align="center" prop="device_ids" label="执行设备">
         <template slot-scope="scope">
-          <el-tag type="success" v-if="scope.row.device_ids && scope.row.device_ids != 0">{{ scope.row.device_ids }}</el-tag>
-          <el-tag type="success" v-else>全部设备</el-tag>
+          <el-tag v-if="scope.row.device_ids && scope.row.device_ids != 0" type="success">{{ scope.row.device_ids }}</el-tag>
+          <el-tag v-else type="success">全部设备</el-tag>
         </template>
       </el-table-column>
       <el-table-column align="center" label="操作">
@@ -117,13 +117,13 @@ export default {
       }
     };
   },
-  created() {
-    this.fetchData();
-  },
   computed: {
     avaliableJob() {
       return this.list.filter(i => !!i.active);
     }
+  },
+  created() {
+    this.fetchData();
   },
   methods: {
     nextRunTime(cron_time) {
@@ -153,7 +153,7 @@ export default {
       });
     },
     editScript(id) {
-      this.$router.push({ path: "/scheduler/edit", query: { id } });
+      this.$router.push({ path: "/scheduler/edit", query: { id }});
     },
     removeScheduler(id) {
       this.listLoading = true;

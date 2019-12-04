@@ -8,7 +8,7 @@
         />
         <span>{{ scriptData.script_name }}.js</span>
       </div>
-      <div class="actions"></div>
+      <div class="actions" />
       <div class="mr20">
         <el-button
           v-loading="bustling"
@@ -29,7 +29,7 @@
         element-loading-text="Loading"
       />
       <div ref="divide" class="divide">Logcat</div>
-      <device-log class="device_log" :showRun="true" @run="runScript" />
+      <device-log class="device_log" :show-run="true" @run="runScript" />
     </div>
   </div>
 </template>

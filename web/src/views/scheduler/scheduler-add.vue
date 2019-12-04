@@ -9,7 +9,7 @@
             { required: true, message: '请输入', trigger: ['blur', 'change'] },
           ]"
         >
-          <el-input v-model="form.scheduler_name"></el-input>
+          <el-input v-model="form.scheduler_name" />
         </el-form-item>
         <el-form-item
           label="cron time："
@@ -18,11 +18,11 @@
             { required: true, message: '请输入', trigger: ['blur', 'change'] },
           ]"
         >
-          <el-input v-model="form.cron_time"></el-input>
+          <el-input v-model="form.cron_time" />
         </el-form-item>
         <el-form-item label="下次执行时间：">
-          <div class="tal" v-if="valid_cron_time">{{ nextRunTime | time }}</div>
-          <div class="tal" v-else>{{ nextRunTime }}</div>
+          <div v-if="valid_cron_time" class="tal">{{ nextRunTime | time }}</div>
+          <div v-else class="tal">{{ nextRunTime }}</div>
         </el-form-item>
         <el-form-item
           label="执行脚本："
@@ -61,7 +61,7 @@
     </div>
     <div slot="footer" class="tar">
       <el-button size="mini" @click="cancel">取 消</el-button>
-      <el-button size="mini" type="primary" :listLoading="listLoading" @click="confirm">确 定</el-button>
+      <el-button size="mini" type="primary" :list-loading="listLoading" @click="confirm">确 定</el-button>
     </div>
   </div>
 </template>

@@ -17,7 +17,7 @@
         placeholder="日志级别"
         style="width: 100px; margin-left: 10px;"
       >
-        <el-option label="Verbose" value="" />
+        <el-option label="Verbose" value />
         <el-option label="Debug" value="Debug" />
         <el-option label="Info" value="Info" />
         <el-option label="Warn" value="Warn" />
@@ -39,7 +39,15 @@
           size="mini"
           @click="runScript"
         />
-        <el-button class="right mr10" icon="el-icon-circle-close" plain circle size="mini" @click="clearConsole" />
+        <slot />
+        <el-button
+          class="right mr10"
+          icon="el-icon-circle-close"
+          plain
+          circle
+          size="mini"
+          @click="clearConsole"
+        />
       </div>
     </div>
     <div
@@ -60,7 +68,7 @@ import WebSocketManager from "@/WebSocketClientManager";
 
 export default {
   name: "DeviceLog",
-  props: ['showRun'],
+  props: ["showRun"],
   data() {
     return {
       maxHeight: 500,
@@ -78,7 +86,7 @@ export default {
         //
       }
       return this.logs;
-    },
+    }
   },
   created() {
     this.messageListener = message => {
@@ -97,7 +105,7 @@ export default {
       this.logs = [];
     },
     runScript() {
-      this.$emit('run', {
+      this.$emit("run", {
         devices: this.device_id
       });
     }
@@ -122,7 +130,10 @@ export default {
 .tool-bar .actions {
   flex-grow: 1;
   margin-left: 25px;
-  padding-right: 15px;
+  padding-right: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 .log-scroller {
   overflow: auto;

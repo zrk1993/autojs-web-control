@@ -33,13 +33,13 @@
       </el-table-column>
       <el-table-column class-name="status-col" label="是否在线" align="center">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.is_online | statusFilter" v-if="scope.row.is_online">在线</el-tag>
-          <el-tag :type="scope.row.is_online | statusFilter" v-else>离线</el-tag>
+          <el-tag v-if="scope.row.is_online" :type="scope.row.is_online | statusFilter">在线</el-tag>
+          <el-tag v-else :type="scope.row.is_online | statusFilter">离线</el-tag>
         </template>
       </el-table-column>
       <el-table-column align="center" label="操作">
         <template slot-scope="scope">
-          <el-popover v-model="scope.row.visible" placement="top" width="160" class="mr10" v-if="scope.row.is_online">
+          <el-popover v-if="scope.row.is_online" v-model="scope.row.visible" placement="top" width="160" class="mr10">
             <p class="tac">您确定断开连接吗？</p>
             <div class="tac m0">
               <el-button size="mini" type="text" @click="scope.row.visible = false">取消</el-button>

@@ -30,7 +30,7 @@ export class SchedulerManager {
     jobs.clear();
     const schedulers = await schedulerModel.getAll();
     for (let i in schedulers) {
-      if (schedulers[i].active) await SchedulerManager.getInstance().addCronJob(schedulers[i].scheduler_id);
+      await SchedulerManager.getInstance().addCronJob(schedulers[i].scheduler_id);
     }
   }
 
@@ -46,6 +46,7 @@ export class SchedulerManager {
       return;
     }
     const scheduler = await schedulerModel.getById(scheduler_id);
+    if (!scheduler.active) return;
     try {
       const job = new CronJob(scheduler.cron_time, this.onTick.bind(this, scheduler.scheduler_id));
       jobs.set(scheduler.scheduler_id, job);

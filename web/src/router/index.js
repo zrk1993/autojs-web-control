@@ -56,6 +56,22 @@ export const constantRoutes = [
   },
 
   {
+    path: '/workspaces',
+    component: Layout,
+    redirect: '/workspaces',
+    name: '工作空间',
+    meta: { title: '设备管理', icon: 'example' },
+    children: [
+      {
+        path: '',
+        name: '工作空间',
+        component: () => import('@/views/workspaces/index'),
+        meta: { title: '工作空间', icon: 'table' }
+      },
+    ]
+  },
+
+  {
     path: '/device',
     component: Layout,
     redirect: '/device/list',
@@ -98,7 +114,7 @@ export const constantRoutes = [
         path: '',
         name: '新建脚本',
         component: () => import('@/views/script/index'),
-        meta: { title: '新建脚本', icon: 'form' }
+        meta: { title: '新建脚本', icon: 'example' }
       },
     ]
   },
@@ -107,14 +123,14 @@ export const constantRoutes = [
     path: '/scheduler',
     redirect: '/scheduler/list',
     name: '计划任务',
-    meta: { title: '计划任务', icon: 'example' },
+    meta: { title: '计划任务', icon: 'nested' },
     component: Layout,
     children: [
       {
         path: 'add',
         name: '计划任务',
         component: () => import('@/views/scheduler/list'),
-        meta: { title: '计划任务', icon: 'form' }
+        meta: { title: '计划任务', icon: 'nested' }
       },
     ]
   },

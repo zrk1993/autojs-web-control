@@ -19,6 +19,18 @@ export class Script {
     return ResultUtils.success();
   }
 
+  @Post('/run2')
+  @Description('执行脚本2')
+  @BodySchame({
+    script_id: joi.any(),
+    devices: joi.array().items(joi.any()),
+  })
+  async run2(@Body() body: any) {
+    const script = await ScriptModel.getById(body.script_id);
+    ScriptExecutor.getInstance().run(body.devices, script.script_name, script.script);
+    return ResultUtils.success();
+  }
+
   @Get('/get_script')
   @Description('获取脚本列表')
   async get_script(@Query() query: any) {
