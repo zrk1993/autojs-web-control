@@ -2,6 +2,17 @@
 
 AutoJs Web Control
 
+## 开发
+
+nodejs typescript souljs vuejs
+
+### 特性
+
+1. 支持群控
+2. 脚本开发
+3. 定时任务
+4. 实时日志
+
 ## USE
 1. 下载Autojs
 2. 连接电脑，地址www.calibur.pro
