@@ -27,5 +27,20 @@ export default class ScriptExecutor {
         script: script,
       }
     });
-  } 
+  }
+
+  public stopAll(devices: string) {
+    const ol = DeviceManager.getInstance().getOnlineDevices();
+
+    if (ol.length === 0) {
+      throw new Error('没有在线设备');
+    }
+
+    WebSocketManager.getInstance().broadcast({
+      type: 'command',
+      data: {
+        command: 'stopAll'
+      }
+    });
+  }
 }

@@ -31,6 +31,16 @@ export class Script {
     return ResultUtils.success();
   }
 
+  @Post('/stop_all')
+  @Description('执行脚本2')
+  @BodySchame({
+    devices: joi.array().items(joi.any()),
+  })
+  async stopAll(@Body() body: any) {
+    ScriptExecutor.getInstance().stopAll(body.devices);
+    return ResultUtils.success();
+  }
+
   @Get('/get_script')
   @Description('获取脚本列表')
   async get_script(@Query() query: any) {
