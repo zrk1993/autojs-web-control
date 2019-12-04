@@ -1,8 +1,4 @@
-## Installation
-
-AutoJs Web Control
-
-## 开发
+## AutoJs Web Control
 
 nodejs typescript souljs vuejs
 
