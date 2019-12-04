@@ -1,6 +1,6 @@
 ## AutoJs Web Control
 
-nodejs typescript souljs vuejs
+nodejs typescript vuejs  [SoulJs](https://github.com/zrk1993/souljs) [AutoJs](https://github.com/hyb1996/Auto.js)
 
 ### 特性
 
