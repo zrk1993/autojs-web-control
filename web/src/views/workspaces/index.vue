@@ -6,17 +6,17 @@
           <div class="checkbox-container">
             <div class="checkbox-header">
               <el-checkbox
-                :indeterminate="isDevicesIndeterminate"
                 v-model="checkAllDevice"
+                :indeterminate="isDevicesIndeterminate"
                 @change="handleDeviceCheckAllChange"
               >设备列表</el-checkbox>
             </div>
             <div class="checkbox-group">
               <el-checkbox-group v-model="checkedDevices" @change="handleCheckedDeviceChange">
-                <div class="checkbox-item" v-for="item in devices" :key="item.device_id">
+                <div v-for="item in devices" :key="item.device_id" class="checkbox-item">
                   <el-checkbox
                     :label="item.device_id"
-                  >{{item.name}} {{ item.is_online ? '' : `（离线）` }}</el-checkbox>
+                  >{{ item.name }} {{ item.is_online ? '' : `（离线）` }}</el-checkbox>
                 </div>
               </el-checkbox-group>
             </div>
@@ -27,16 +27,16 @@
             <div class="checkbox-header">
               <span style="color: #606266; font-size: 14px; font-weight: 500;">脚本列表</span>
             </div>
-            <div class="checkbox-group" v-loading="listLoading">
-              <div class="checkbox-item" v-for="item in scripts" :key="item.script_id">
-                <el-radio v-model="checkedScript" :label="item.script_id">{{item.script_name}}</el-radio>
+            <div v-loading="listLoading" class="checkbox-group">
+              <div v-for="item in scripts" :key="item.script_id" class="checkbox-item">
+                <el-radio v-model="checkedScript" :label="item.script_id">{{ item.script_name }}</el-radio>
               </div>
             </div>
           </div>
         </el-col>
       </el-row>
     </div>
-    <div ref="divide" class="divide"></div>
+    <div ref="divide" class="divide" />
     <device-log class="device_log">
       <div>
         <el-button plain round size="mini" @click="stopAllScript">Stop All</el-button>
@@ -52,6 +52,9 @@ import DeviceLog from "@/components/DeviceLog";
 import { mapGetters } from "vuex";
 export default {
   name: "Dashboard",
+  components: {
+    DeviceLog
+  },
   data() {
     return {
       checkAllDevice: false,
@@ -62,9 +65,6 @@ export default {
       isScriptsIndeterminate: true,
       scripts: []
     };
-  },
-  components: {
-    DeviceLog
   },
   computed: {
     ...mapGetters(["name"]),
@@ -96,14 +96,14 @@ export default {
       this.isDevicesIndeterminate = false;
     },
     handleCheckedDeviceChange(value) {
-      let checkedCount = value.length;
+      const checkedCount = value.length;
       this.checkAllDevice = checkedCount === this.devices.length;
       this.isDevicesIndeterminate =
         checkedCount > 0 && checkedCount < this.devices.length;
     },
     handleCheckedScriptChange(value) {
       console.log(value);
-      let checkedCount = value.length;
+      const checkedCount = value.length;
       this.checkAllScript = checkedCount === this.scripts.length;
       this.isScriptsIndeterminate =
         checkedCount > 0 && checkedCount < this.scripts.length;
