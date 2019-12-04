@@ -1,5 +1,7 @@
 ## AutoJs Web Control
 
+[体验地址](http://47.107.251.62:9318/)
+
 nodejs typescript vuejs  [SoulJs](https://github.com/zrk1993/souljs) [AutoJs](https://github.com/hyb1996/Auto.js)
 
 ### 特性
@@ -11,7 +13,7 @@ nodejs typescript vuejs  [SoulJs](https://github.com/zrk1993/souljs) [AutoJs](ht
 
 ## USE
 1. 下载Autojs
-2. 连接电脑，地址www.calibur.pro
+2. 连接电脑，地址 47.107.251.62:9317
 
 ## image
 
