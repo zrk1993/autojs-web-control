@@ -42,28 +42,28 @@
             android:name="android.max_aspect"
             android:value="2.1"/>
 
-        <activity
-            android:name=".ui.cloud.CloudActivity_"
-            android:hardwareAccelerated="true"
-            android:label="云控RK">
-            <intent-filter>
-                <category android:name="android.intent.category.LAUNCHER"/>
-
-                <action android:name="android.intent.action.MAIN"/>
-            </intent-filter>
-        </activity>
-        <activity android:name=".ui.cloud.CloudSettingActivity_"/>
 <!--        <activity-->
-<!--            android:name=".ui.splash.SplashActivity"-->
+<!--            android:name=".ui.cloud.CloudActivity_"-->
 <!--            android:hardwareAccelerated="true"-->
-<!--            android:label="@string/app_name"-->
-<!--            android:theme="@style/AppTheme.Splash">-->
+<!--            android:label="云控RK">-->
 <!--            <intent-filter>-->
 <!--                <category android:name="android.intent.category.LAUNCHER"/>-->
 
 <!--                <action android:name="android.intent.action.MAIN"/>-->
 <!--            </intent-filter>-->
 <!--        </activity>-->
+        <activity android:name=".ui.cloud.CloudSettingActivity_"/>
+        <activity
+            android:name=".ui.splash.SplashActivity"
+            android:hardwareAccelerated="true"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.Splash">
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER"/>
+
+                <action android:name="android.intent.action.MAIN"/>
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.main.MainActivity_"
             android:hardwareAccelerated="true"
