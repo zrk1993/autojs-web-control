@@ -44,6 +44,15 @@ export class DeviceManager {
         WebSocketManager.getInstance().sendMessage(client, { type: 'hello', data: { server_version: 2 } });
       }
     });
+
+    WebSocketManager.getInstance().addClientMessageListener((client, data) => {
+      if (client.type === 'device') {
+        const message = JSON.parse(data as string);
+        if (message.type === 'hello') {
+          // client.extData.device_name = message.data.device_name;
+        }
+      }
+    });
   }
 
   public getOnlineDevices() {
