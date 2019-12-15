@@ -1,10 +1,12 @@
 import { Controller, Get, QuerySchame, Query, Ctx, Post, BodySchame, Body, Description } from '@/common/application';
 import { ResultUtils } from '@/utils/result-utils';
 import SchedulerModel from '@/model/scheduler.model';
+import Role from '@/decorators/role';
 import { SchedulerManager } from '@/service/SchedulerManager';
 
 @Controller('/scheduler')
 @Description('计划')
+@Role()
 export class Scheduler {
   @Get('/get_scheduler_list')
   @Description('获取计划列表')

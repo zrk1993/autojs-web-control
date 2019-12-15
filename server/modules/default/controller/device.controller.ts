@@ -2,10 +2,12 @@ import * as joi from 'joi';
 import { Controller, Get, QuerySchame, Query, Ctx, Post, BodySchame, Body, Description } from '@/common/application';
 import { ResultUtils } from '@/utils/result-utils';
 import DeviceModel from '@/model/device.model';
+import Role from '@/decorators/role';
 import { DeviceManager } from '@/service/DeviceManager';
 
 @Controller('/device')
 @Description('设备')
+@Role()
 export class Device {
   @Get('/get_device_list')
   @Description('获取设备列表')

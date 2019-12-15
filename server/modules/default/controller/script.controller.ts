@@ -4,9 +4,11 @@ import * as joi from 'joi';
 import * as moment from 'moment';
 import ScriptExecutor from '@/service/ScriptExecutor';
 import ScriptModel from '@/model/script.model';
+import Role from '@/decorators/role';
 
 @Controller('/script')
 @Description('脚本')
+@Role()
 export class Script {
   @Post('/run')
   @Description('执行脚本')

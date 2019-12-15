@@ -24,7 +24,7 @@
       </a>
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
+          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar" />
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -38,6 +38,9 @@
             <el-dropdown-item>Autojs</el-dropdown-item>
           </a>
           <el-dropdown-item divided>
+            <span style="display:block;" @click="changePassword">Password</span>
+          </el-dropdown-item>
+          <el-dropdown-item>
             <span style="display:block;" @click="logout">Log Out</span>
           </el-dropdown-item>
         </el-dropdown-menu>
@@ -47,6 +50,7 @@
 </template>
 
 <script>
+import request from "@/utils/request";
 import { mapGetters } from "vuex";
 import Breadcrumb from "@/components/Breadcrumb";
 import Hamburger from "@/components/Hamburger";
@@ -66,6 +70,26 @@ export default {
     async logout() {
       await this.$store.dispatch("user/logout");
       this.$router.push(`/login?redirect=${this.$route.fullPath}`);
+    },
+    changePassword() {
+      this.$prompt("请输入新密码", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        inputPattern: /[a-z0-9]{6,20}/,
+        inputErrorMessage: '英文或数字至少6位'
+      }).then(({ value }) => {
+        request({
+          url: "/auth/password",
+          method: "post",
+          data: { password: value }
+        }).then(res => {
+          this.$message({
+            type: "success",
+            message: "修改成功！"
+          });
+          this.logout();
+        });
+      });
     }
   }
 };
