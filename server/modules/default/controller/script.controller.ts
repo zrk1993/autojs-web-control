@@ -62,6 +62,8 @@ export class Script {
   @Description('新建脚本')
   async add_device(@Body() body: any) {
     const res = await ScriptModel.insert(body)
+    body.create_time = moment(body.create_time || new Date()).format('YYYY-MM-DD HH:mm:ss');
+    body.update_time = moment(body.update_time || new Date()).format('YYYY-MM-DD HH:mm:ss');
     return ResultUtils.success({ script_id: res.insertId });
   }
 
