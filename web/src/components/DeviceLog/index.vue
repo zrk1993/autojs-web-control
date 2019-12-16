@@ -12,7 +12,7 @@
         />
       </el-select>
       <el-select v-model="categorySelect" size="mini" placeholder="指定类别" style="width: 120px; margin-left: 10px;">
-        <el-option label="全部" value />
+        <el-option label="全部类别" value />
         <el-option
           v-for="item in $store.state.device.category"
           :key="item"
