@@ -4,6 +4,7 @@ export const tableName = 'device';
 export interface ITableStructure {
   device_id?: number,
   name?: string,
+  category?: string,
   ip?: string,
   create_time?: string,
   connect_time?: string,

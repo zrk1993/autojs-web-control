@@ -13,6 +13,7 @@ export class Script {
   @Post('/run')
   @Description('执行脚本')
   @BodySchame({
+    devices: joi.string(),
     fileName: joi.string(),
     script: joi.string(),
   })
@@ -29,7 +30,7 @@ export class Script {
   })
   async run2(@Body() body: any) {
     const script = await ScriptModel.getById(body.script_id);
-    ScriptExecutor.getInstance().run(body.devices, script.script_name, script.script);
+    ScriptExecutor.getInstance().run(body.devices.join(','), script.script_name, script.script);
     return ResultUtils.success();
   }
 

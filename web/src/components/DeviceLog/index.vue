@@ -11,24 +11,33 @@
           :value="item.device_id"
         />
       </el-select>
+      <el-select v-model="categorySelect" size="mini" placeholder="指定类别" style="width: 120px; margin-left: 10px;">
+        <el-option label="全部" value />
+        <el-option
+          v-for="item in $store.state.device.category"
+          :key="item"
+          :label="item"
+          :value="item"
+        />
+      </el-select>
       <el-select
         v-model="logLevel"
         size="mini"
         placeholder="日志级别"
         style="width: 100px; margin-left: 10px;"
       >
-        <el-option label="Verbose" value />
-        <el-option label="Debug" value="Debug" />
-        <el-option label="Info" value="Info" />
-        <el-option label="Warn" value="Warn" />
-        <el-option label="Error" value="Error" />
+        <el-option label="Verbose" value="" />
+        <el-option label="Debug" value="D" />
+        <el-option label="Info" value="I" />
+        <el-option label="Warn" value="W" />
+        <el-option label="Error" value="E" />
       </el-select>
       <el-input
-        v-model="logFilter"
+        v-model="findStr"
         placeholder="请输入内容"
         size="mini"
         prefix-icon="el-icon-search"
-        style="width: 200px; margin-left: 10px;"
+        style="width: 150px; margin-left: 10px;"
       />
       <div class="actions">
         <el-button
@@ -74,23 +83,38 @@ export default {
       maxHeight: 500,
       messageListener: null,
       deviceSelect: "",
-      logLevel: "Verbose",
-      logFilter: "",
-      logs: []
+      categorySelect: '',
+      logLevel: "",
+      logs: [],
+      findStr: '',
     };
   },
   computed: {
     ...mapGetters(["name"]),
     showLogs() {
+      let result = this.logs;
       if (this.deviceSelect) {
-        //
+        result = result.filter((log) => {
+          return log.device.device_id == this.deviceSelect;
+        });
       }
-      return this.logs;
+      if (this.findStr) {
+        result = result.filter((log) => {
+          return log.log.indexOf(this.findStr) > -1;
+        });
+      }
+      if (this.logLevel) {
+        result = result.filter((log) => {
+          return log.log.indexOf(`/${this.logLevel}:`) > 0;
+        });
+      }
+      return result;
     }
   },
   created() {
     this.messageListener = message => {
       if (message.type === "log") {
+        message.data.log = message.data.device.name + '-' +message.data.log;
         this.logs.push(message.data);
         this.$refs.logScroller.scrollTop = this.$refs.logScroller.scrollHeight;
       }
@@ -106,7 +130,7 @@ export default {
     },
     runScript() {
       this.$emit("run", {
-        devices: this.device_id
+        devices: this.deviceSelect
       });
     }
   }

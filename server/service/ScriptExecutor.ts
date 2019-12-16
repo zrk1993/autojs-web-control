@@ -17,7 +17,7 @@ export default class ScriptExecutor {
       throw new Error('没有在线设备');
     }
 
-    WebSocketManager.getInstance().broadcast({
+    const data = {
       type: 'command',
       data: {
         command: 'run',
@@ -25,6 +25,12 @@ export default class ScriptExecutor {
         view_id: fileName,
         name: fileName,
         script: script,
+      }
+    };
+
+    WebSocketManager.getInstance().getClients().forEach((client) => {
+      if (client.type === 'device' && (!devices || devices.includes(client.extData.device_id))) {
+        WebSocketManager.getInstance().sendMessage(client, data);
       }
     });
   }
@@ -36,10 +42,16 @@ export default class ScriptExecutor {
       throw new Error('没有在线设备');
     }
 
-    WebSocketManager.getInstance().broadcast({
+    const data = {
       type: 'command',
       data: {
         command: 'stopAll'
+      }
+    };
+
+    WebSocketManager.getInstance().getClients().forEach((client) => {
+      if (client.type === 'device' && (!devices || devices.includes(client.extData.device_id))) {
+        WebSocketManager.getInstance().sendMessage(client, data);
       }
     });
   }

@@ -7,3 +7,9 @@ CREATE TABLE `t_admin` (
 
 
 INSERT INTO `t_admin` (`uname`, `password`) VALUES ('admin', '123456');
+
+#209-12-16
+ALTER TABLE `t_device`
+MODIFY COLUMN `create_time`  datetime NULL DEFAULT NULL AFTER `ip`,
+MODIFY COLUMN `connect_time`  datetime NULL DEFAULT NULL AFTER `create_time`,
+ADD COLUMN `category`  varchar(255) NULL DEFAULT 'default' AFTER `connect_time`

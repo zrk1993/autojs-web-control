@@ -10,13 +10,38 @@
                 :indeterminate="isDevicesIndeterminate"
                 @change="handleDeviceCheckAllChange"
               >设备列表</el-checkbox>
+
+              <el-tag
+                size="mini"
+                type="info"
+                class="csp ml10"
+                :effect="deviceFilter.state == 'online' ? 'dark': 'light'"
+                @click="checkState('online')"
+              >在线({{onlineDeviceCount}})</el-tag>
+              <el-tag
+                size="mini"
+                type="info"
+                class="csp ml2"
+                :effect="deviceFilter.state == 'offline' ? 'dark': 'light'"
+                @click="checkState('offline')"
+              >离线({{offlineDeviceCount}})</el-tag>
+
+              <el-tag
+                v-for="category in $store.state.device.category"
+                :key="category"
+                type="info"
+                :effect="checkedTag.includes(category) ? 'dark': 'light'"
+                size="mini"
+                class="csp ml2 mr5"
+                @click="checkTag(category)"
+              >{{ category || '默认' }}</el-tag>
             </div>
             <div class="checkbox-group">
               <el-checkbox-group v-model="checkedDevices" @change="handleCheckedDeviceChange">
                 <div v-for="item in devices" :key="item.device_id" class="checkbox-item">
                   <el-checkbox
                     :label="item.device_id"
-                  >{{ item.name }} {{ item.is_online ? '' : `（离线）` }}</el-checkbox>
+                  >{{ item.name }} 【{{ item.category || '默认' }}】 {{ item.is_online ? '' : `（离线）` }}</el-checkbox>
                 </div>
               </el-checkbox-group>
             </div>
@@ -59,17 +84,45 @@ export default {
     return {
       checkAllDevice: false,
       checkedDevices: [],
-      isDevicesIndeterminate: true,
+      checkedTag: [],
+      isDevicesIndeterminate: false,
       checkAllScript: false,
       checkedScript: null,
       isScriptsIndeterminate: true,
-      scripts: []
+      scripts: [],
+      deviceFilter: {
+        state: ""
+      }
     };
   },
   computed: {
     ...mapGetters(["name"]),
     devices() {
-      return this.$store.state.device.list;
+      let res = this.$store.state.device.list.filter(device => {
+        if (!this.deviceFilter.state) {
+          return true;
+        } else if (this.deviceFilter.state === "online") {
+          return device.is_online;
+        } else if (this.deviceFilter.state === "offline") {
+          return !device.is_online;
+        } else {
+          return false;
+        }
+      });
+
+      if (this.checkedTag.length > 0) {
+        res = res.filter(device => {
+          return this.checkedTag.includes(device.category);
+        });
+      }
+
+      return res;
+    },
+    onlineDeviceCount() {
+      return this.$store.state.device.list.filter(it => it.is_online).length;
+    },
+    offlineDeviceCount() {
+      return this.$store.state.device.list.length - this.onlineDeviceCount;
     }
   },
   created() {
@@ -79,6 +132,27 @@ export default {
     this.dragDivide();
   },
   methods: {
+    checkTag(tag) {
+      if (this.checkedTag.includes(tag)) {
+        this.checkedTag.splice(this.checkedTag.indexOf(tag), 1);
+      } else {
+        this.checkedTag.push(tag);
+      }
+      this.handleDeviceCheckAllChange();
+      this.handleCheckedDeviceChange([]);
+    },
+    checkState(state) {
+      if (!this.deviceFilter.state) {
+        this.deviceFilter.state = state;
+      } else {
+        if (this.deviceFilter.state === state) {
+          this.deviceFilter.state = '';
+        } else {
+          this.deviceFilter.state = state;
+        }
+      }
+      this.handleDeviceCheckAllChange();
+    },
     getScripts() {
       this.listLoading = true;
       request({
@@ -91,22 +165,14 @@ export default {
       });
     },
     handleDeviceCheckAllChange(val) {
-      console.log(val);
       this.checkedDevices = val ? this.devices.map(i => i.device_id) : [];
       this.isDevicesIndeterminate = false;
     },
     handleCheckedDeviceChange(value) {
       const checkedCount = value.length;
-      this.checkAllDevice = checkedCount === this.devices.length;
+      this.checkAllDevice = checkedCount === this.devices.length && checkedCount > 0;
       this.isDevicesIndeterminate =
         checkedCount > 0 && checkedCount < this.devices.length;
-    },
-    handleCheckedScriptChange(value) {
-      console.log(value);
-      const checkedCount = value.length;
-      this.checkAllScript = checkedCount === this.scripts.length;
-      this.isScriptsIndeterminate =
-        checkedCount > 0 && checkedCount < this.scripts.length;
     },
     runScript() {
       request
@@ -214,28 +280,31 @@ export default {
   border-radius: 4px;
   overflow: hidden;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 .checkbox-header {
-  height: 40px;
-  line-height: 40px;
+  line-height: 30px;
   background: #f5f7fa;
   margin: 0;
-  padding-left: 15px;
+  padding: 5px 0 5px 15px;
   border-bottom: 1px solid #ebeef5;
   box-sizing: border-box;
   color: #000;
+  flex-wrap: wrap;
 }
 .checkbox-group {
   padding: 5px 15px 15px 15px;
   height: 100%;
   overflow: auto;
+  flex-grow: 1;
 }
 .checkbox-item {
   margin-top: 10px;
   display: block;
 }
 .code {
-  height: 300px;
+  height: 350px;
   overflow: auto;
   overflow-x: hidden;
 }

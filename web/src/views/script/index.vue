@@ -150,7 +150,11 @@ export default {
       this.bustling = true;
       var script = this.codeMirror.getValue();
       request
-        .post("/script/run", { script, fileName: this.scriptData.script_name, devices })
+        .post("/script/run", {
+          script,
+          fileName: this.scriptData.script_name,
+          devices: String(devices.devices)
+        })
         .then(res => {
           console.log(res);
         })

@@ -2,11 +2,18 @@ import request from '@/utils/request';
 
 const state = {
   list: [],
+  category: []
 };
 
 const mutations = {
   UPDATE_ONLINES: (state, devices) => {
     state.list = devices;
+    state.category = [];
+    state.list.forEach((it) => {
+      if (!state.category.includes(it.category)) {
+        state.category.push(it.category);
+      }
+    });
   }
 };
 

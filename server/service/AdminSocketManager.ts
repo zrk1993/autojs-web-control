@@ -32,7 +32,6 @@ export class AdminSocketManager {
     });
 
     WebSocketManager.getInstance().addDeviceLogListener((client, data) => {
-      console.log(client.extData.device_name + data.data.log);
       data.data.device = client.extData;
       WebSocketManager.getInstance().getClients().forEach((c) => {
         if (c.type === 'admin') {
