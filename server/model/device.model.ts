@@ -17,8 +17,8 @@ export class DeviceModel extends BaseModel<ITableStructure> {
     super({ tableName });
   }
 
-  async getByDeviceName(device_name: string) {
-    return this.$db.table(tableName).where({ device_name }).findOrEmpty();
+  async getByDeviceName(name: string) {
+    return this.$db.table(tableName).where({ name }).findOrEmpty();
   }
 
   async getByIp(ip: string) {

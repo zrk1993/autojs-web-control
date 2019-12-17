@@ -147,6 +147,7 @@ export default {
           data: { device_id, name: value }
         }).then(res => {
           this.fetchData();
+        }).finally(() => {
           this.listLoading = false;
         });
       });
@@ -163,6 +164,7 @@ export default {
           data: { device_id, category: value }
         }).then(res => {
           this.fetchData();
+        }).finally(() => {
           this.listLoading = false;
         });
       });

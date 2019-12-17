@@ -17,14 +17,14 @@
                 class="csp ml10"
                 :effect="deviceFilter.state == 'online' ? 'dark': 'light'"
                 @click="checkState('online')"
-              >在线({{onlineDeviceCount}})</el-tag>
+              >在线({{ onlineDeviceCount }})</el-tag>
               <el-tag
                 size="mini"
                 type="info"
                 class="csp ml2"
                 :effect="deviceFilter.state == 'offline' ? 'dark': 'light'"
                 @click="checkState('offline')"
-              >离线({{offlineDeviceCount}})</el-tag>
+              >离线({{ offlineDeviceCount }})</el-tag>
 
               <el-tag
                 v-for="category in $store.state.device.category"

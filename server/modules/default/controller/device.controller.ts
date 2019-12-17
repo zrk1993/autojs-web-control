@@ -15,7 +15,7 @@ export class Device {
     const devices = await DeviceModel.getAll();
     const onlineDevices = DeviceManager.getInstance().getOnlineDevices();
     devices.forEach((d) => {
-      const ol = onlineDevices.find(i => i.ip === d.ip);
+      const ol = onlineDevices.find(i => i.device_name === d.name);
       if (ol) {
         d.is_online = true;
       }
@@ -33,6 +33,10 @@ export class Device {
   @Post('/update_device')
   @Description('编辑设备')
   async update_device(@Body() body: any) {
+    const isRepeat = await DeviceModel.getByDeviceName(body.name);
+    if (isRepeat) {
+      return ResultUtils.badRequest('该设备名已被占用！');
+    }
     await DeviceModel.updateById(body.device_id, body);
     return ResultUtils.success();
   }

@@ -72,7 +72,6 @@
 
 <script>
 import { mapGetters } from "vuex";
-import request from "@/utils/request";
 import WebSocketManager from "@/WebSocketClientManager";
 
 export default {
@@ -95,7 +94,7 @@ export default {
       let result = this.logs;
       if (this.deviceSelect) {
         result = result.filter((log) => {
-          return log.device.device_id == this.deviceSelect;
+          return log.device.device_id === this.deviceSelect;
         });
       }
       if (this.findStr) {
@@ -114,7 +113,7 @@ export default {
   created() {
     this.messageListener = message => {
       if (message.type === "log") {
-        message.data.log = message.data.device.name + '-' +message.data.log;
+        message.data.log = message.data.device.name + '-' + message.data.log;
         this.logs.push(message.data);
         this.$refs.logScroller.scrollTop = this.$refs.logScroller.scrollHeight;
       }

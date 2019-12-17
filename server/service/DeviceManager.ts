@@ -28,12 +28,14 @@ export class DeviceManager {
       }
       const ip = (req.connection.remoteAddress || (req.headers['x-forwarded-for'] as any || '').split(/\s*,\s*/)[0]).replace(/[^0-9\.]/ig, '');
 
-      let device = await DeviceModel.getByIp(ip);
+      const deviceName = params.name || ip;
+
+      let device = await DeviceModel.getByDeviceName(deviceName as string);
       if (!device) {
-        await DeviceModel.insert({ name: ip, ip, create_time: moment().format('YYYY-MM-DD HH:mm:ss') });
+        await DeviceModel.insert({ name:deviceName, ip, create_time: moment().format('YYYY-MM-DD HH:mm:ss') });
       }
 
-      device = await DeviceModel.getByIp(ip);
+      device = await DeviceModel.getByDeviceName(deviceName);
       await DeviceModel.updateById(device.device_id, { connect_time: moment().format('YYYY-MM-DD HH:mm:ss') });
 
       return { type: 'device', extData: device };
@@ -61,7 +63,7 @@ export class DeviceManager {
       if (c.type === 'device') {
         deviceClients.push({
           ip: c.ip,
-          device_name: c.extData.device_name,
+          device_name: c.extData.name,
         });
       }
     });
@@ -71,6 +73,14 @@ export class DeviceManager {
   public disconnectDeviceByIp(ip: string) {
     WebSocketManager.getInstance().getClients().forEach((c) => {
       if (c.type === 'device' && c.ip === ip) {
+        c.terminate();
+      }
+    });
+  }
+
+  public disconnectDeviceByName(name: string) {
+    WebSocketManager.getInstance().getClients().forEach((c) => {
+      if (c.type === 'device' && c.extData.name === name) {
         c.terminate();
       }
     });
