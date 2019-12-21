@@ -215,7 +215,7 @@ function clickLike() {
 }
 
 function nextVideo() {
-    return swipe(device.width / 2 + 50, device.height * 0.85, device.width / 2 + 50, device.height * 0.3, 500);
+    return swipe(device.width / 2 + 50, device.height * 0.9, device.width / 2 + 50, device.height * 0.3, 300);
 }
 
 function readUid() {
