@@ -22,9 +22,9 @@
             点赞概率
             <el-input v-model="likePercent" style="width: 120px;"></el-input>
         </div>
-        <horizontal>
+        <div>
             主页浏览视频数 <el-input v-model="looknum1" style="width: 120px;"></el-input> 到 <el-input v-model="looknum2" style="width: 120px;"></el-input> 个
-        </horizontal>
+        </div>
     </div>
     <div class="my15">
       <input type="file" ref="input" @change="upload" />
@@ -219,12 +219,6 @@ function nextVideo() {
 }
 
 function readUid() {
-    // if (!files.exists("/sdcard/uid.txt")) {
-    //     toastLog("没有发现uid.txt");
-    //     sleep(2000);
-    // }
-
-    // var uids = files.read("/sdcard/uid.txt");
 
     var uidList = JSON.parse('@@@');
 
@@ -316,14 +310,14 @@ export default {
 
       let script = code.replace("@@@", JSON.stringify(this.uids));
 
-      script = script.replace("@looktime1", JSON.stringify(this.looktime1));
-      script = script.replace("@looktime2", JSON.stringify(this.looktime2));
-      script = script.replace("@guanzhuvideonum1", JSON.stringify(this.guanzhuvideonum1));
-      script = script.replace("@guanzhuvideonum2", JSON.stringify(this.guanzhuvideonum2));
-      script = script.replace("@looknum1", JSON.stringify(this.looknum1));
-      script = script.replace("@looknum2", JSON.stringify(this.looknum2));
-      script = script.replace("@guanzhunum", JSON.stringify(this.guanzhunum));
-      script = script.replace("@likePercent", JSON.stringify(this.likePercent));
+      script = script.replace("@looktime1", this.looktime1);
+      script = script.replace("@looktime2", this.looktime2);
+      script = script.replace("@guanzhuvideonum1", this.guanzhuvideonum1);
+      script = script.replace("@guanzhuvideonum2", this.guanzhuvideonum2);
+      script = script.replace("@looknum1", this.looknum1);
+      script = script.replace("@looknum2", this.looknum2);
+      script = script.replace("@guanzhunum", this.guanzhunum);
+      script = script.replace("@likePercent", this.likePercent);
 
       request
         .post("/script/run", {
