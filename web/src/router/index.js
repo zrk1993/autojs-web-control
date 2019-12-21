@@ -148,6 +148,19 @@ export const constantRoutes = [
     ]
   },
 
+  {
+    path: '/uid',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: '设备日志',
+        component: () => import('@/views/dashboard/uid'),
+        meta: { title: '养号', icon: 'form' }
+      }
+    ]
+  },
+
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ];
