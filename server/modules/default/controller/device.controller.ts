@@ -35,7 +35,7 @@ export class Device {
   async update_device(@Body() body: any) {
     const isRepeat = await DeviceModel.getByDeviceName(body.name);
     if (isRepeat) {
-      return ResultUtils.badRequest('该设备名已被占用！');
+      // return ResultUtils.badRequest('该设备名已被占用！');
     }
     await DeviceModel.updateById(body.device_id, body);
     return ResultUtils.success();
