@@ -62,6 +62,7 @@ export class DeviceManager {
     WebSocketManager.getInstance().getClients().forEach((c) => {
       if (c.type === 'device') {
         deviceClients.push({
+          device_id: c.extData.device_id,
           ip: c.ip,
           device_name: c.extData.name,
         });

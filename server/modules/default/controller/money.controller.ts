@@ -5,6 +5,8 @@ import * as moment from 'moment';
 import ScriptExecutor from '@/service/ScriptExecutor';
 import ScriptModel from '@/model/script.model';
 import Role from '@/decorators/role';
+import { WebSocketManager } from '@/service/WebSocketManager';
+import { DeviceManager } from '@/service/DeviceManager';
 
 @Controller('/money')
 @Description('')
@@ -203,15 +205,17 @@ export class Money {
                 var uidList = JSON.parse('@@@');
 
                 var res = [];
+                var ii = 0;
                 for (var i = 0; i< uidList.length; i ++) {
                     if (uidList[i].length > 4) {
                         if (alreadyDo.indexOf(uidList[i]) > -1) {
-
+                            ii++;
                         } else {
                             res.push(uidList[i]);
                         }
                     }
                 }
+                toastLog("过滤" + ii);
                 return res;
             }
 
@@ -223,8 +227,7 @@ export class Money {
                 sleep(2000);
             }
         `;
-        let script = code_douyin_yanghao.replace("@@@", JSON.stringify(body.uids));
-        script = script.replace("@looktime1", body.looktime1);
+        let script = code_douyin_yanghao.replace("@looktime1", body.looktime1);
         script = script.replace("@looktime2", body.looktime2);
         script = script.replace("@guanzhuvideonum1", body.guanzhuvideonum1);
         script = script.replace("@guanzhuvideonum2", body.guanzhuvideonum2);
@@ -232,8 +235,20 @@ export class Money {
         script = script.replace("@looknum2", body.looknum2);
         script = script.replace("@guanzhunum", body.guanzhunum);
         script = script.replace("@likePercent", body.likePercent);
-        ScriptExecutor.getInstance().run('', "抖音养号", script);
-        return ResultUtils.success();
+
+        const deviceNum = DeviceManager.getInstance().getOnlineDevices().length;
+        
+        const evg = Math.floor(body.uids.length / deviceNum);
+        
+        let i = 0;
+        DeviceManager.getInstance().getOnlineDevices().forEach((client) => {
+            const uids = body.uids.slice(i * evg, evg);
+            const c = script.replace("@@@", JSON.stringify(uids));
+            ScriptExecutor.getInstance().run(client.device_id + "", "抖音养号", c);
+
+            i += 1;
+        });
+        return ResultUtils.success(`当前连接设备${deviceNum},每个设备分配UID个数${evg}`);
     }
 
     @Post('/duosan_msg')
