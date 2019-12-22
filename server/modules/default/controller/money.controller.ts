@@ -106,7 +106,7 @@ export class Money {
                     return;
                 }
 
-                var zuopin = textStartsWith("作品").findOne(3000);
+                var zuopin = textStartsWith("作品").findOne(2000);
                 if (zuopin) {
                     var num = +zuopin.text().replace('作品', '');
                     if (num > 0) {
@@ -116,10 +116,18 @@ export class Money {
                         back();
                         sleep(1000);
                     } else {
-                        toastLog("该用户有没作品");
-                        back();
-                        sleep(1000);
-                        return;
+                        var xihuan = textStartsWith("喜欢").findOne(1000);
+                        if (xihuan) {
+                            var num = +xihuan.text().replace('喜欢', '');
+                            if (num > 0) {
+            
+                            } else {
+                                toastLog("该用户有没作品");
+                                back();
+                                sleep(1000);
+                                return;
+                            }
+                        }
                     }
                 }
 
