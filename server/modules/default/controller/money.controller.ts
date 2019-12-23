@@ -242,7 +242,7 @@ export class Money {
         
         let i = 0;
         DeviceManager.getInstance().getOnlineDevices().forEach((client) => {
-            const uids = body.uids.slice(i * evg, evg);
+            const uids = body.uids.slice(i * evg, (i+1) * evg);
             const c = script.replace("@@@", JSON.stringify(uids));
             ScriptExecutor.getInstance().run(client.device_id + "", "抖音养号", c);
 
