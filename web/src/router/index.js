@@ -55,21 +55,21 @@ export const constantRoutes = [
     }]
   },
 
-  // {
-  //   path: '/workspaces',
-  //   component: Layout,
-  //   redirect: '/workspaces',
-  //   name: '工作空间',
-  //   meta: { title: '设备管理', icon: 'example' },
-  //   children: [
-  //     {
-  //       path: '',
-  //       name: '工作空间',
-  //       component: () => import('@/views/workspaces/index'),
-  //       meta: { title: '工作空间', icon: 'table' }
-  //     },
-  //   ]
-  // },
+  {
+    path: '/workspaces',
+    component: Layout,
+    redirect: '/workspaces',
+    name: '工作空间',
+    meta: { title: '设备管理', icon: 'example' },
+    children: [
+      {
+        path: '',
+        name: '工作空间',
+        component: () => import('@/views/workspaces/index'),
+        meta: { title: '工作空间', icon: 'table' }
+      },
+    ]
+  },
 
   {
     path: '/device',
@@ -148,30 +148,30 @@ export const constantRoutes = [
     ]
   },
 
-  {
-    path: '/douyinyanghao',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: '设备日志',
-        component: () => import('@/views/dashboard/uid'),
-        meta: { title: '抖音养号', icon: 'form' }
-      }
-    ]
-  },
-  {
-    path: '/duoshanmsg',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: '设备日志',
-        component: () => import('@/views/dashboard/simsg'),
-        meta: { title: '多闪私信', icon: 'form' }
-      }
-    ]
-  },
+  // {
+  //   path: '/douyinyanghao',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       name: '设备日志',
+  //       component: () => import('@/views/dashboard/uid'),
+  //       meta: { title: '抖音养号', icon: 'form' }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/duoshanmsg',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       name: '设备日志',
+  //       component: () => import('@/views/dashboard/simsg'),
+  //       meta: { title: '多闪私信', icon: 'form' }
+  //     }
+  //   ]
+  // },
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
