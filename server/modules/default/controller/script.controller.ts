@@ -70,6 +70,7 @@ export class Script {
   @Post('/update_script')
   @Description('脚本保存')
   async update_device(@Body() body: any) {
+    body.create_time = undefined;
     body.update_time = moment(body.update_time || new Date()).format('YYYY-MM-DD HH:mm:ss');
     await ScriptModel.updateById(body.script_id, body);
     return ResultUtils.success();
