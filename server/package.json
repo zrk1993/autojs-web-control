@@ -40,7 +40,7 @@
     "sqlstring": "^2.3.1",
     "swagger-ui-dist": "^3.20.5",
     "uuid": "^3.3.2",
-    "ws": "^7.2.0"
+    "ws": "^7.4.6"
   },
   "devDependencies": {
     "@types/ioredis": "^4.0.6",
