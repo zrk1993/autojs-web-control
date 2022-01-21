@@ -30,7 +30,7 @@
     "koa-session": "^5.10.1",
     "koa-static": "^5.0.0",
     "koa-unless": "^1.0.7",
-    "log4js": "^4.0.1",
+    "log4js": "^6.4.0",
     "module-alias": "^2.2.2",
     "moment": "^2.24.0",
     "mysql": "^2.16.0",
