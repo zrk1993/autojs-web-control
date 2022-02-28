@@ -15,9 +15,6 @@ nodejs typescript vuejs  [SoulJs](https://github.com/zrk1993/souljs) [AutoJs](ht
 1. 下载Autojs
 2. 连接电脑，地址 47.113.101.40:9317
 
-
-交流群 838249290
-
 ## image
 
 ![screen-develop](https://raw.githubusercontent.com/zrk1993/autojs-web-control/master/image/develop.png)
