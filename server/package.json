@@ -32,7 +32,7 @@
     "koa-unless": "^1.0.7",
     "log4js": "^4.0.1",
     "module-alias": "^2.2.2",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "mysql": "^2.16.0",
     "reflect-metadata": "^0.1.12",
     "soul-orm": "git+https://github.com/zrk1993/soul-orm.git",
