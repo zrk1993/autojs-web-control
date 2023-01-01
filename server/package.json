@@ -66,7 +66,7 @@
     "prettier": "^1.16.3",
     "ts-clean": "^1.0.2",
     "ts-node": "^7.0.1",
-    "tsconfig-paths": "^3.7.0",
+    "tsconfig-paths": "^3.10.1",
     "tslint": "5.12.1",
     "typescript": "^3.3.1"
   }
