@@ -1,6 +1,6 @@
 ## AutoJs Web Control
 
-[体验地址](https://auto.wosdj.com/)
+[体验地址](https://auto.wosdj.com/) admin/123456
 
 nodejs typescript vuejs  [SoulJs](https://github.com/zrk1993/souljs) [AutoJs](https://github.com/hyb1996/Auto.js)
 
@@ -13,7 +13,7 @@ nodejs typescript vuejs  [SoulJs](https://github.com/zrk1993/souljs) [AutoJs](ht
 
 ## USE
 1. 下载Autojs
-2. 连接电脑，地址 47.113.101.40:9317
+2. 连接电脑，地址 127.0.0.1:9317
 
 ## image
 
